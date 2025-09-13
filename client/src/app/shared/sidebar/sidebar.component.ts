@@ -4,6 +4,7 @@ import { GroupPrivilegeDTO } from '../../features/admin/interfaces/group-privile
 import { AuthService } from '../../features/auth/auth.service';
 import { map } from 'rxjs';
 import { PrivilegeDTO } from '../../features/admin/interfaces/privilege-dto';
+import { Roles } from '../../Enums/rolesEnum';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,17 +12,18 @@ import { PrivilegeDTO } from '../../features/admin/interfaces/privilege-dto';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent implements OnInit {
+
   dropdownOpen = false;
   role : string | null = ''
   privileges: GroupPrivilegeDTO[] | null = null;
-
+  Roles = Roles
   constructor(private authService: AuthService, private privilegeService: PrivilegeService) {}
 
   ngOnInit(): void {
     // this.privileges = this.authService.getPrivileges();
     // console.log(this.privileges)
 
-    this.role = localStorage.getItem('role') 
+    this.role = this.authService.getRole(); 
   }
   
   hasPrivilege(privilegeName: string, permission: 'add' | 'delete' | 'update' | 'view'): boolean {
@@ -53,5 +55,10 @@ export class SidebarComponent implements OnInit {
 
     // console.log(this.privileges?.forEach(cur=>console.log(cur)))
     return true;
+  }
+
+  logout() {
+
+    this.authService.logout();
   }
 }

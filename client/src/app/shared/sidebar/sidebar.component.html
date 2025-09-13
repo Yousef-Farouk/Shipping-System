@@ -92,7 +92,7 @@
     <img src="../../../assets/logo.logo.png" alt="Logo" class="sidebar-logo" width="120">
   </div>
 
-  <ul *ngIf="role == 'admin'"  class="nav flex-column me-5  align-items-end">
+  <ul *ngIf="role == Roles.employee"  class="nav flex-column me-5  align-items-end">
     <li class="nav-item">
       <a class="nav-link" routerLink='/employee'>
         الرئيسية <i class="fas fa-home"></i>
@@ -121,9 +121,9 @@
         المناطق <i class="fas fa-map-marked-alt"></i>
       </a>
       <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
-        <li *ngIf="hasPrivilege('Governate', 'view')"><a class="dropdown-item" routerLink="/employee/governate"> المحافظات</a>
+        <li *ngIf="hasPrivilege('Governate', 'view')"><a class="dropdown-item" routerLink="/employee/location/governate"> المحافظات</a>
         </li>
-        <li *ngIf="hasPrivilege('City', 'view')"><a class="dropdown-item" routerLink="/employee/city">المدن </a></li>
+        <li *ngIf="hasPrivilege('City', 'view')"><a class="dropdown-item" routerLink="/employee/location/city">المدن </a></li>
       </ul>
     </li>
 
@@ -138,10 +138,10 @@
         الاعدادات <i class="fas fa-cog"></i>
       </a>
       <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
-        <li *ngIf="hasPrivilege('Weight', 'view')"><a class="dropdown-item" routerLink="/weight"> اعدادات الوزن</a></li>
-        <li *ngIf="hasPrivilege('VillageCost', 'view')"><a class="dropdown-item" routerLink="village-cost"> التوصيل
+        <li *ngIf="hasPrivilege('Weight', 'view')"><a class="dropdown-item" routerLink="employee/settings/weight"> اعدادات الوزن</a></li>
+        <li *ngIf="hasPrivilege('VillageCost', 'view')"><a class="dropdown-item" routerLink="employee/settings/village"> التوصيل
             لقريه </a></li>
-        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="shippingtype"> انواع الشحن
+        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="employee/settings/shipping"> انواع الشحن
           </a></li>
       </ul>
     </li>
@@ -214,5 +214,13 @@
     </li>
   </ul>
 
+  <ul  class="nav flex-column me-5 align-items-end" >
+    <li class="nav-item" >
+        <a class="nav-link" (click)="logout()" >
+          تسجيل خروج <i class="fas fa-sign-out-alt"  ></i>
+        </a>
+    </li>
+  </ul>
+    
 
 </div>

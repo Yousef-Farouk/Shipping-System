@@ -4,7 +4,7 @@ import { CityTableComponent } from './city-table/city-table.component';
 import { CityComponent } from './city/city.component';
 
 const routes: Routes = [
-  {path:'',component:CityTableComponent}
+  //{path:'',component:CityTableComponent}
 ];
 
 @NgModule({

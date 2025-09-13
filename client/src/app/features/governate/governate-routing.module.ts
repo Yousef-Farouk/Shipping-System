@@ -2,9 +2,12 @@ import { GovernateComponentComponent } from './governate-component/governate-com
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GovernateComponent } from './governate/governate.component';
+import { CityComponent } from '../city/city/city.component';
 
 const routes: Routes = [
-  { path: '', component: GovernateComponentComponent }
+  { path: 'governate', component: GovernateComponentComponent },
+  { path: 'city', component: CityComponent }
+
 ];
 
 @NgModule({

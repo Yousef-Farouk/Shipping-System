@@ -1,3 +1,4 @@
+import { SettingsModule } from './../../modules/settings/settings/settings.module';
 import { OrderReportsComponent } from './../order/order-reports/order-reports.component';
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -11,9 +12,7 @@ import { MerchantListComponent } from '../merchant/merchant-list/merchant-list.c
 import { RepresentativeTableComponent } from '../representative/representative-table/representative-table.component';
 import { CityComponent } from '../city/city/city.component';
 import { GovernateComponentComponent } from '../governate/governate-component/governate-component.component';
-import { VillageCostComponent } from '../village-cost/village-cost/village-cost.component';
-import { ShippingTypeTableComponent } from '../shippingtype/shippingtype-table/shippingtype-table.component';
-import { WeightComponent } from '../weight/weight/weight.component';
+import { ShippingTypeTableComponent } from '../../modules/settings/settings/shippingtype-table/shippingtype-table.component';
 import { AllOrdersComponent } from '../order/all-orders/all-orders.component';
 
 const routes: Routes = [
@@ -23,15 +22,30 @@ const routes: Routes = [
   {path: 'edit/:id',component:AddEmployeeComponent},
   {path: 'addGroup',component: AddPrivilegeComponent },
   {path: 'myGroups',component: ListGroupComponent },
-  {path:'branch',component:BranchTableComponent},
+  //{path:'branch',component:BranchTableComponent},
   {path:'merchant/all',component:MerchantListComponent},
   {path:'representative/all',component:RepresentativeTableComponent},
-  {path:'city',component:CityComponent},
-  {path:'governate',component:GovernateComponentComponent},
-  {path:'village-cost',component:VillageCostComponent},
+  //{path:'city',component:CityComponent},
+ // {path:'governate',component:GovernateComponentComponent},
+  // {path:'village-cost',component:VillageCostComponent},
   // {path:'order/all',component:AllOrdersComponent},
   // {path:'order/reports',component:OrderReportsComponent},
-  
+  {
+    path : 'branch',
+    loadChildren : () => import('../branch/branch.module').then(m => m.BranchModule)
+  }
+  ,
+  {
+    path : 'location',
+    loadChildren : () => import('../governate/governate.module').then(m => m.GovernateModule)
+  }
+  ,
+  {
+    path : 'settings',
+    loadChildren : () => import('../../modules/settings/settings/settings.module').then(m => m.SettingsModule)
+  }
+
+
 
 ];
 

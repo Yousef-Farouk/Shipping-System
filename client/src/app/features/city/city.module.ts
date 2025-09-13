@@ -12,8 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    CityTableComponent,
-    CityComponent,
 
   ],
   imports: [

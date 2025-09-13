@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginDTO } from '../interfaces/login-dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Roles } from '../../../Enums/rolesEnum';
 
 @Component({
   selector: 'app-login',
@@ -66,23 +67,31 @@ export class LoginComponent implements OnInit {
             verticalPosition: 'top',
             direction: 'rtl'
           });
-          console.log("Login done successfully as " + response.role + ":)");
-          console.log(`login credentials ${JSON.stringify(loginCredentials)}`)
-          console.log(`login credentials ${JSON.stringify(response)}`)
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('role', response.role);
+          // console.log("Login done successfully as " + response.role + ":)");
+          // console.log(`login credentials ${JSON.stringify(loginCredentials)}`)
+          // console.log(`login credentials ${JSON.stringify(response)}`)
+          // localStorage.setItem('token', response.token);
+          // localStorage.setItem('role', response.role);
+          this.authService.handleLogin(response)
           this.redirectUser(response.role);
         },
         error: (error) => {
-          console.error('Login failed:', error);
-          if (error.status === 400 && error.error?.errors) {
-            const validationErrors = error.error.errors;
-            if (validationErrors.Email) {
-              console.error('Email validation errors:', validationErrors.Email);
-            }
-          } else {
-            console.error('Unexpected error:', error.message);
-          }
+          //console.error('Login failed:', error);
+
+           this.snackBar.open(error, 'اغلاق', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            direction: 'rtl'
+          })
+          // if (error.status === 400 && error.error?.errors) {
+          //   const validationErrors = error.error.errors;
+          //   if (validationErrors.Email) {
+          //     console.error('Email validation errors:', validationErrors.Email);
+          //   }
+          // } else {
+          //   console.error('Unexpected error:', error.message);
+          // }
         }
       });
     } else {
@@ -91,16 +100,12 @@ export class LoginComponent implements OnInit {
   }
 
   private redirectUser(role: string) {
-    if (role === 'admin'){
-      console.log('admin redirection')
+    if (role === Roles.employee ){
       this.router.navigate(['/employee']);
-    } else if (role === 'representative') {
+    } else if (role === Roles.representative) {
       this.router.navigate(['/representative']);
-    } else if (role === 'merchant') {
+    } else if (role === Roles.merchant) {
       this.router.navigate(['/merchant']);
-    // } else if (role === 'supportive') {
-    //   this.router.navigate(['/supportive-dashboard']);
-    // }
     }
   }
 

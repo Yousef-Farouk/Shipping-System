@@ -34,30 +34,32 @@ namespace ShippingSystem.Services
             this.unitOfWork = unitOfWork;
         }
 
-        private Task<string> GetUserRole(ApplicationUser applicationUser) 
+        private async Task<string> GetUserRole(ApplicationUser applicationUser) 
         {
-            return Task.FromResult(userManager.GetRolesAsync(applicationUser).Result.FirstOrDefault() ?? "");
+            var role = (await userManager.GetRolesAsync(applicationUser)).FirstOrDefault();
+
+            return role;
         }
-        private Task<string> GenerateToken(ApplicationUser applicationUser, bool? rememberMe)
+        private async Task<string>  GenerateToken(ApplicationUser applicationUser, bool? rememberMe)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, applicationUser.Id ?? ""),
-                new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email ?? ""),
-                new Claim(JwtRegisteredClaimNames.Name, applicationUser.FullName ?? ""),
-                new Claim(JwtRegisteredClaimNames.Iss, configuration.GetSection("JwtSettings").GetSection("ValidIssuer").Value ?? ""),
-                new Claim(JwtRegisteredClaimNames.Aud, configuration.GetSection("JwtSettings").GetSection("ValidAudience").Value ?? ""),
-                new Claim("phoneNumber", applicationUser.PhoneNumber ?? ""),
-                new Claim("phoneNumberConfirmed", applicationUser.PhoneNumberConfirmed.ToString() ?? ""),
-                new Claim("twoFactorEnabled", applicationUser.TwoFactorEnabled.ToString() ?? ""),
-                new Claim("accessFailedCount", applicationUser.AccessFailedCount.ToString() ?? "")
+                //new Claim(JwtRegisteredClaimNames.NameId, applicationUser.Id ?? ""),
+                //new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email ?? ""),
+                //new Claim(JwtRegisteredClaimNames.Name, applicationUser.FullName ?? ""),
+                //new Claim(JwtRegisteredClaimNames.Iss, configuration.GetSection("JwtSettings").GetSection("ValidIssuer").Value ?? ""),
+                //new Claim(JwtRegisteredClaimNames.Aud, configuration.GetSection("JwtSettings").GetSection("ValidAudience").Value ?? ""),
+                //new Claim("phoneNumber", applicationUser.PhoneNumber ?? ""),
+                //new Claim("phoneNumberConfirmed", applicationUser.PhoneNumberConfirmed.ToString() ?? ""),
+                //new Claim("twoFactorEnabled", applicationUser.TwoFactorEnabled.ToString() ?? ""),
+                //new Claim("accessFailedCount", applicationUser.AccessFailedCount.ToString() ?? "")
             };
 
-            var roles = userManager.GetRolesAsync(applicationUser).Result;
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            //var roles = await userManager.GetRolesAsync(applicationUser);
+            //foreach (var role in roles)
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, role));
+            //}
 
             DateTime expiration = rememberMe == true ? DateTime.UtcNow.AddDays(7) : DateTime.UtcNow.AddDays(1);
 
@@ -73,7 +75,7 @@ namespace ShippingSystem.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
-            return Task.FromResult(token);
+            return token ;
         }
 
         public async Task<AuthResponseDTO> Login(LoginDTO loginDTO)
