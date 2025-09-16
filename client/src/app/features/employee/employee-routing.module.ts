@@ -20,8 +20,8 @@ const routes: Routes = [
   {path: 'add', component:AddEmployeeComponent},
   {path: 'all', component:EmployeeListComponent},
   {path: 'edit/:id',component:AddEmployeeComponent},
-  {path: 'addGroup',component: AddPrivilegeComponent },
-  {path: 'myGroups',component: ListGroupComponent },
+ // {path: 'addGroup',component: AddPrivilegeComponent },
+ // {path: 'myGroups',component: ListGroupComponent },
   //{path:'branch',component:BranchTableComponent},
   {path:'merchant/all',component:MerchantListComponent},
   {path:'representative/all',component:RepresentativeTableComponent},
@@ -44,7 +44,12 @@ const routes: Routes = [
     path : 'settings',
     loadChildren : () => import('../../modules/settings/settings/settings.module').then(m => m.SettingsModule)
   }
-
+  ,
+   {
+    path : 'groups',
+    loadChildren : () => import('../admin/admin.module').then(m => m.AdminModule)
+  }
+  
 
 
 ];

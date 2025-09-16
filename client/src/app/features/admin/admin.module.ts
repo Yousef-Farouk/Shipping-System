@@ -14,17 +14,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
-  declarations: [ AddPrivilegeComponent,ListGroupComponent ],
+  declarations: [AddPrivilegeComponent,ListGroupComponent],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     MatTableModule, MatPaginatorModule, MatButtonModule,
     MatInputModule, MatIconModule, MatFormFieldModule,
     AdminRoutingModule,
-    RouterModule.forChild([
-      // { path: 'myGroups', component: ListGroupComponent },
-      { path: 'addGroup', component: AddPrivilegeComponent },
-      { path: 'editGroup/:id', component: AddPrivilegeComponent },
-    ]),
+    RouterModule,
   ],
 
   exports:[AddPrivilegeComponent,ListGroupComponent ]

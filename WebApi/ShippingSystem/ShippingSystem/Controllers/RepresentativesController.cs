@@ -15,9 +15,9 @@ namespace ShippingSystem.Controllers
     {
         private readonly ShippingContext _context;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<Group> _roleManager;
+        private readonly RoleManager<Roles> _roleManager;
 
-        public RepresentativesController(ShippingContext context, UserManager<ApplicationUser> _userManager, RoleManager<Group> roleManager)
+        public RepresentativesController(ShippingContext context, UserManager<ApplicationUser> _userManager, RoleManager<Roles> roleManager)
         {
             _context = context;
             userManager = _userManager;
@@ -140,7 +140,7 @@ namespace ShippingSystem.Controllers
             var roleExists = await _roleManager.RoleExistsAsync(roleName);
             if (!roleExists)
             {
-                var role = new Group();
+                var role = new Roles();
                 role.DateAdded = DateTime.UtcNow;
                 role.Name = roleName;
                 var result = await _roleManager.CreateAsync(role);

@@ -40,7 +40,7 @@ namespace ShippingSystem.Services
 
             CreateMap<GroupResponseDTO, Group>()
                 .ForMember(dest => dest.Name, opt=>opt.MapFrom(src=>src.Name))
-                .ForMember(dest => dest.DateAdded, opt=>opt.MapFrom(src=>src.DateAdded))
+                .ForMember(dest => dest.Date, opt=>opt.MapFrom(src=>src.DateAdded))
                 .ForMember(dest => dest.Privileges, opt=>opt.MapFrom(src=>src.GroupPrivileges))
                 .ReverseMap();
 

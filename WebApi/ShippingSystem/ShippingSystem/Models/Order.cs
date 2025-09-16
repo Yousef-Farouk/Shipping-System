@@ -42,10 +42,10 @@ namespace ShippingSystem.Models
 
         public DateTime? OrderDate {  get; set; }
 
-        //[ForeignKey("OrderType")]
-        //public int? OrderType_Id { get; set; }
+        [ForeignKey("OrderType")]
+        public int? OrderType_Id { get; set; }
 
-        //public virtual OrderType? OrderType { get; set; }
+        public virtual OrderType? OrderType { get; set; }
 
         public OrderTypeEnum orderType { get; set; }
 
@@ -54,10 +54,10 @@ namespace ShippingSystem.Models
 
         public virtual Branch? Branch { get; set; }
 
-        //[ForeignKey("PaymentType")]
-        //public int? Payment_Id { get; set; }
+        [ForeignKey("PaymentType")]
+        public int? Payment_Id { get; set; }
 
-        //public virtual PaymentType? PaymentType { get; set; }
+        public virtual PaymentType? PaymentType { get; set; }
 
         public PaymentTypeEnum paymentType {  get; set; }
 

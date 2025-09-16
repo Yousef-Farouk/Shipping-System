@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace ShippingSystem.Models
+﻿namespace ShippingSystem.Models
 {
-        public class Group : IdentityRole
-        {
-                public DateTime? DateAdded { get; set; } = DateTime.UtcNow;
-                public virtual ICollection<GroupPrivilege> Privileges { get; set; } = new List<GroupPrivilege>();
-        }
+    public class Group
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public DateTime Date {  get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public virtual ICollection<GroupPrivilege> Privileges { get; set; } = new List<GroupPrivilege>();
+
+        public virtual IList<UserGroups> UserGroups { get; set; }
+
+
+    }
 }

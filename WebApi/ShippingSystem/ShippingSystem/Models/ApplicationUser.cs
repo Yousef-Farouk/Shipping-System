@@ -9,5 +9,10 @@ namespace ShippingSystem.Models
         public string? FullName { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+
+
+        public virtual IList<UserGroups> UserGroups { get; set; }
+
+
     }
 }

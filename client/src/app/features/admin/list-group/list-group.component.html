@@ -62,7 +62,7 @@
 <div class="container">
   <div class="d-flex justify-content-between mb-4">
     <button class="btn btn-primary" style="background-color: #15467e;
-    font-weight: bold; font-family: serif;" (click)="addGroup()"> مجموعة جديدة</button>
+    font-weight: bold; font-family: serif;" [routerLink]="['/employee','groups','add']"> مجموعة جديدة</button>
     <div class="search-container">
       <div class="d-flex align-items-center">
         <span class="material-icons cursor-pointer"
@@ -92,8 +92,8 @@
           <td class="text-center d-flex justify-content-center gap-3">
             <i (click)="deleteGroup(group.id)" class="text-center bi bi-trash fs-5 text-danger"
               [ngStyle]="{cursor: 'pointer'}"></i>
-            <i (click)="editGroup(group)" class="text-center bi bi-pencil-square fs-5 text-warning"
-              [ngStyle]="{cursor: 'pointer'}"></i>
+            <i  class="text-center bi bi-pencil-square fs-5 text-warning"
+              [ngStyle]="{cursor: 'pointer'}"  [routerLink]="['/employee','groups','edit',group.id]"></i>
           </td>
           <td class="text-center">{{ group.dateAdded | date:'medium' }}</td>
           <td>{{ group.name }}</td>

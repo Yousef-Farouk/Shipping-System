@@ -13,19 +13,21 @@ namespace ShippingSystem.Repositories
             this.context = context;
         }
 
-        public async Task<List<GroupPrivilege?>> GetGroupPrivilegesByGroupId(string groupId)
+        public async Task<List<GroupPrivilege?>> GetGroupPrivilegesByGroupId(int groupId)
         {
             //return (await context.Roles.FirstOrDefaultAsync(g => g.Id == groupId))!.Privileges.ToList() ?? new List<GroupPrivilege?>();
 
-            var group = await context.Roles.FirstOrDefaultAsync(g => g.Id == groupId);
-            if (group != null)
-            {
-                return group.Privileges.ToList()!;
-            }
-            else
-            {
-                return new List<GroupPrivilege?>();
-            }
+            //var group = await context.Roles.FirstOrDefaultAsync(g => g.Id == groupId);
+            //if (group != null)
+            //{
+            //    return group.Privileges.ToList()!;
+            //}
+            //else
+            //{
+            //    return new List<GroupPrivilege?>();
+            //}
+
+            return null;
         }
     }
 }

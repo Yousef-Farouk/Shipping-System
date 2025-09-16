@@ -30,7 +30,8 @@ export class AddPrivilegeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private privilegeService: PrivilegeService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private activatedRoute : ActivatedRoute
   ) {
     this.groupForm = this.fb.group({
       groupName: ['', {
@@ -43,6 +44,7 @@ export class AddPrivilegeComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("activated route" + this.activatedRoute);
     this.route.paramMap.subscribe(params => {
       this.groupId = params.get('id');
       if (this.groupId) {
@@ -72,6 +74,7 @@ export class AddPrivilegeComponent implements OnInit {
         this.privilegeService.getPrivileges().subscribe({
           next: (data: PrivilegeDTO[]) => {
             this.privileges = data;
+            console.log("data :" + data);
             this.setPrivileges(data, []);
           },
           error: (error) => {
@@ -107,9 +110,13 @@ export class AddPrivilegeComponent implements OnInit {
   }
 
   getSelectedPrivileges(): GroupPrivilegeDTO[] {
-    return this.privilegesFormArray.controls
+
+    let selectedPrivileges = this.privilegesFormArray.controls
       .filter(control => control.value.Add || control.value.Update || control.value.View || control.value.Delete)
       .map(control => control.value);
+    
+      console.log("selectedPriv: " + selectedPrivileges);
+    return selectedPrivileges
   }
 
   onSubmit() {
@@ -121,7 +128,7 @@ export class AddPrivilegeComponent implements OnInit {
     const selectedPrivileges: GroupPrivilegeDTO[] = this.getSelectedPrivileges();
     const newGroup: GroupDTO = {
       name: this.groupForm.value.groupName,
-      groupPrivileges: selectedPrivileges
+      groupPrivileges: selectedPrivileges 
     };
 
     if (this.groupId) {
@@ -148,7 +155,7 @@ export class AddPrivilegeComponent implements OnInit {
   }
 
   private handleSuccess(message: string) {
-    this.router.navigate(['/admin/myGroups']);
+    this.router.navigate(['../'],{relativeTo : this.activatedRoute});
     const snackBarRef = this.snackBar.open(message, 'إغلاق', {
       duration: 3000,
       horizontalPosition: 'center',

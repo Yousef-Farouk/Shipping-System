@@ -5,6 +5,6 @@ namespace ShippingSystem.Repositories
 {
     public interface IGroupPrivilegeRepository
     {
-        public Task<List<GroupPrivilege?>> GetGroupPrivilegesByGroupId(string groupId);
+        public Task<List<GroupPrivilege?>> GetGroupPrivilegesByGroupId(int groupId);
     }
 }

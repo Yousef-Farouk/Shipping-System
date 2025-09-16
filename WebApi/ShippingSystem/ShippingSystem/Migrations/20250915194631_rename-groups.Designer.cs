@@ -12,8 +12,8 @@ using ShippingSystem.Models;
 namespace ShippingSystem.Migrations
 {
     [DbContext(typeof(ShippingContext))]
-    [Migration("20240701111539_yousef-v5")]
-    partial class yousefv5
+    [Migration("20250915194631_rename-groups")]
+    partial class renamegroups
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,7 +156,7 @@ namespace ShippingSystem.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -237,7 +237,7 @@ namespace ShippingSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Governate_Id")
+                    b.Property<int?>("Governate_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -277,32 +277,25 @@ namespace ShippingSystem.Migrations
 
             modelBuilder.Entity("ShippingSystem.Models.Group", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DateAdded")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Group");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.GroupPrivilege", b =>
@@ -319,8 +312,8 @@ namespace ShippingSystem.Migrations
                     b.Property<bool?>("Delete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Group_Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Privelege_Id")
                         .HasColumnType("int");
@@ -333,7 +326,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Group_Id");
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("Privelege_Id");
 
@@ -410,6 +403,12 @@ namespace ShippingSystem.Migrations
 
                     b.Property<string>("VillageOrStreet")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("orderType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("paymentType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -523,6 +522,36 @@ namespace ShippingSystem.Migrations
                     b.HasIndex("Governate_Id");
 
                     b.ToTable("RepresentativeGovernates");
+                });
+
+            modelBuilder.Entity("ShippingSystem.Models.Roles", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.ShippingType", b =>
@@ -645,8 +674,8 @@ namespace ShippingSystem.Migrations
                     b.Property<int?>("Governate_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InCompleteShippingRatio")
-                        .HasColumnType("int");
+                    b.Property<float?>("InCompleteShippingRatio")
+                        .HasColumnType("real");
 
                     b.Property<int?>("SpecialPickupCost")
                         .HasColumnType("int");
@@ -673,10 +702,13 @@ namespace ShippingSystem.Migrations
                     b.Property<int?>("Branch_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CompanyOrderPrecentage")
-                        .HasColumnType("int");
+                    b.Property<float?>("CompanyOrderPrecentage")
+                        .HasColumnType("real");
 
-                    b.Property<int?>("SalePrecentage")
+                    b.Property<float?>("SalePrecentage")
+                        .HasColumnType("real");
+
+                    b.Property<int>("SaleType")
                         .HasColumnType("int");
 
                     b.HasIndex("Branch_Id");
@@ -686,7 +718,7 @@ namespace ShippingSystem.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("ShippingSystem.Models.Group", null)
+                    b.HasOne("ShippingSystem.Models.Roles", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -713,7 +745,7 @@ namespace ShippingSystem.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("ShippingSystem.Models.Group", null)
+                    b.HasOne("ShippingSystem.Models.Roles", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -739,9 +771,7 @@ namespace ShippingSystem.Migrations
                 {
                     b.HasOne("ShippingSystem.Models.Governate", "Governate")
                         .WithMany("Cities")
-                        .HasForeignKey("Governate_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Governate_Id");
 
                     b.Navigation("Governate");
                 });
@@ -750,7 +780,7 @@ namespace ShippingSystem.Migrations
                 {
                     b.HasOne("ShippingSystem.Models.Group", "Group")
                         .WithMany("Privileges")
-                        .HasForeignKey("Group_Id");
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("ShippingSystem.Models.Privilege", "Privilege")
                         .WithMany("Privileges")

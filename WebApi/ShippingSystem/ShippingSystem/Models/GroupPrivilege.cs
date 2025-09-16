@@ -17,7 +17,7 @@ namespace ShippingSystem.Models
         public bool? Delete { get; set; }
 
         [ForeignKey("Group")]
-        public string? Group_Id { get; set; }
+        public int? GroupId { get; set; }
 
         [ForeignKey("Privilege")]
         public int? Privelege_Id { get; set; }

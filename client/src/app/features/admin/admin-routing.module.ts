@@ -6,8 +6,10 @@ import { AddPrivilegeComponent } from './add-privilege/add-privilege.component';
 import { ListGroupComponent } from './list-group/list-group.component';
 
 const routes: Routes = [
-  { path: 'addGroup', component: AddPrivilegeComponent },
-  { path: 'myGroups', component: ListGroupComponent },
+  { path: '', component: ListGroupComponent },
+  { path: 'add', component: AddPrivilegeComponent },
+  { path: 'edit/:id', component: AddPrivilegeComponent },
+
 ];
 
 @NgModule({

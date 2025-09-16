@@ -23,12 +23,12 @@ namespace ShippingSystem.Services
             return await unitOfWork.GroupRepository.GetGroupsAsync(pageNumber, pageSize);
         }
 
-        public async Task<Group> GetGroupByIdAsync(string id)
+        public async Task<Group> GetGroupByIdAsync(int id)
         {
             return await unitOfWork.GroupRepository.GetById(id);
         }
 
-        public async Task<GroupDTO> GetGroupDTOByIdAsync(string id)
+        public async Task<GroupDTO> GetGroupDTOByIdAsync(int id)
         {
             var group = await unitOfWork.GroupRepository.GetById(id);
             return mapper.Map<GroupDTO>(group);
@@ -43,9 +43,9 @@ namespace ShippingSystem.Services
         {            
             var group = mapper.Map<Group>(groupDTO);
 
-            group.DateAdded = DateTime.Now;
-            group.NormalizedName = group.Name.ToUpper();
-            group.ConcurrencyStamp = Guid.NewGuid().ToString();
+            //group.DateAdded = DateTime.Now;
+            //group.NormalizedName = group.Name.ToUpper();
+            //group.ConcurrencyStamp = Guid.NewGuid().ToString();
 
             await unitOfWork.GroupRepository.Add(group);
 
@@ -55,62 +55,63 @@ namespace ShippingSystem.Services
 
         public async Task UpdateGroupAsync(Group existingGroup, GroupDTO groupDTO)
         {
-            try
-            {
-                existingGroup.Name = groupDTO.Name;
-                existingGroup.NormalizedName = groupDTO.Name.ToUpper();
+            //try
+            //{
+            //    existingGroup.Name = groupDTO.Name;
+            //    existingGroup.NormalizedName = groupDTO.Name.ToUpper();
 
-                var existingPrivileges = existingGroup.Privileges.ToList();
+            //    var existingPrivileges = existingGroup.Privileges.ToList();
 
-                foreach (var existingPrivilege in existingPrivileges)
-                {
-                    if (!groupDTO.GroupPrivileges.Any(p => p.Privelege_Id == existingPrivilege.Privelege_Id))
-                    {
-                        await unitOfWork.GroupPrivilegeRepository.Delete(existingPrivilege);
-                    }
-                }
+            //    foreach (var existingPrivilege in existingPrivileges)
+            //    {
+            //        if (!groupDTO.GroupPrivileges.Any(p => p.Privelege_Id == existingPrivilege.Privelege_Id))
+            //        {
+            //            await unitOfWork.GroupPrivilegeRepository.Delete(existingPrivilege);
+            //        }
+            //    }
 
-                foreach (var privilegeDTO in groupDTO.GroupPrivileges)
-                {
-                    var existingPrivilege = existingPrivileges.FirstOrDefault(p => p.Privelege_Id == privilegeDTO.Privelege_Id);
+            //    foreach (var privilegeDTO in groupDTO.GroupPrivileges)
+            //    {
+            //        var existingPrivilege = existingPrivileges.FirstOrDefault(p => p.Privelege_Id == privilegeDTO.Privelege_Id);
 
-                    if (existingPrivilege != null) 
-                    {
-                        mapper.Map(privilegeDTO, existingPrivilege);
-                    } 
-                    else 
-                    {
-                        var newPrivilege = mapper.Map<GroupPrivilege>(privilegeDTO);
-                        newPrivilege.Group_Id = existingGroup.Id;
-                        existingGroup.Privileges.Add(newPrivilege);
-                    }
-                }
+            //        if (existingPrivilege != null) 
+            //        {
+            //            mapper.Map(privilegeDTO, existingPrivilege);
+            //        } 
+            //        else 
+            //        {
+            //            var newPrivilege = mapper.Map<GroupPrivilege>(privilegeDTO);
+            //           // newPrivilege.GroupId = existingGroup.Id;
+            //            existingGroup.Privileges.Add(newPrivilege);
+            //        }
+            //    }
 
-                await unitOfWork.GroupRepository.Update(existingGroup);
-                await unitOfWork.Save();
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                throw new DbUpdateConcurrencyException("Concurrency conflict occurred.", ex);
-            }
+            //    await unitOfWork.GroupRepository.Update(existingGroup);
+            //    await unitOfWork.Save();
+            //}
+            //catch (DbUpdateConcurrencyException ex)
+            //{
+            //    throw new DbUpdateConcurrencyException("Concurrency conflict occurred.", ex);
+            //}
+
         }
 
-        public async Task DeleteGroupAsync(Group group)
+    public async Task DeleteGroupAsync(Group group)
         {
-            List<GroupPrivilege> groupPrivileges = null;
-            await Task.Run(async () =>
-            {
-                var allPrivileges = await unitOfWork.GroupPrivilegeRepository.GetAll();
-                groupPrivileges = allPrivileges.Where(gp => gp.Group_Id == group.Id).ToList();
-            });
+            //List<GroupPrivilege> groupPrivileges = null;
+            //await Task.Run(async () =>
+            //{
+            //    var allPrivileges = await unitOfWork.GroupPrivilegeRepository.GetAll();
+            //    //groupPrivileges = allPrivileges.Where(gp => gp.RoleId == group.Id).ToList();
+            //});
 
-            if (groupPrivileges != null)
-            {
-                foreach (var privilege in groupPrivileges)
-                {
-                    await unitOfWork.GroupPrivilegeRepository.Delete(privilege);
-                }
-            }
+            //if (groupPrivileges != null)
+            //{
+            //    foreach (var privilege in groupPrivileges)
+            //    {
+            //        await unitOfWork.GroupPrivilegeRepository.Delete(privilege);
+            //    }
+            //}
 
             await unitOfWork.GroupRepository.Delete(group);
             await unitOfWork.Save();
@@ -120,5 +121,7 @@ namespace ShippingSystem.Services
         {
             await unitOfWork.Save();
         }
+
+      
     }
 }

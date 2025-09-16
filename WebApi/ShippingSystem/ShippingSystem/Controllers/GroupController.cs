@@ -47,7 +47,7 @@ namespace ShippingSystem.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetGroupById(string id)
+        public async Task<IActionResult> GetGroupById(int id)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace ShippingSystem.Controllers
         }
 
         [HttpGet("GetGroupDTO/{id}")]
-        public async Task<IActionResult> GetGroupDTOById(string id)
+        public async Task<IActionResult> GetGroupDTOById(int id)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace ShippingSystem.Controllers
         /// <param name="groupDTO"></param>
         /// <returns></returns>
         [HttpPut("UpdateGroup/{id}")]
-        public async Task<IActionResult> UpdateGroup(string id, GroupDTO groupDTO)
+        public async Task<IActionResult> UpdateGroup(int id, GroupDTO groupDTO)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace ShippingSystem.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGroup(string id)
+        public async Task<IActionResult> DeleteGroup(int id)
         {
             var group = await groupControllerService.GetGroupByIdAsync(id);
             if (group == null)

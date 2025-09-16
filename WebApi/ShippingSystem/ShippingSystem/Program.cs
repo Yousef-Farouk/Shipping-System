@@ -31,7 +31,7 @@ namespace ShippingSystem
                                   .UseLazyLoadingProxies()
             );
 
-            builder.Services.AddIdentity<ApplicationUser, Group>(options =>
+            builder.Services.AddIdentity<ApplicationUser, Roles>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;

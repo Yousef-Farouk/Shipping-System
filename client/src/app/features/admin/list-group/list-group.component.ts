@@ -55,7 +55,7 @@ export class ListGroupComponent implements OnInit {
         this.groups = data;
         this.totalGroups = data.length;
         this.calculatePagination();
-        console.log("groups after loading: ",JSON.stringify(this.groups));
+        //console.log("groups after loading: ",JSON.stringify(this.groups));
       },
       error: (error) => {
         console.error('Error fetching groups:', error);
@@ -68,6 +68,7 @@ export class ListGroupComponent implements OnInit {
   }
 
   editGroup(group: Group) {
+    console.log("edit clicked");
     this.router.navigate(['/employee/editGroup', group.id]);
   }
 
