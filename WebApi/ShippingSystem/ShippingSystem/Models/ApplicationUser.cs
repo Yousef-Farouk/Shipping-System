@@ -11,7 +11,7 @@ namespace ShippingSystem.Models
         public bool IsDeleted { get; set; } = false;
 
 
-        public virtual IList<UserGroups> UserGroups { get; set; }
+        public virtual IList<UserGroups> UserGroups { get; set; } = new List<UserGroups>();
 
 
     }

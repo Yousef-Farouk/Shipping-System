@@ -13,5 +13,7 @@ namespace ShippingSystem.DTOs.Groups
         public bool? Delete { get; set; }
 
         public int? Privelege_Id { get; set; }
+
+        public int? GroupId { get; set; }
     }
 }

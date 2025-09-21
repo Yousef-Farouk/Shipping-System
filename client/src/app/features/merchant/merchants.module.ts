@@ -13,10 +13,7 @@ import { SharedModule } from '../../shared/shared.module';
   declarations: [
     MerchantListComponent,
     MerchantModalComponent,
-    MerchantFormComponent,
-  
-    
-    
+    MerchantFormComponent
   ],
   imports: [
     CommonModule,

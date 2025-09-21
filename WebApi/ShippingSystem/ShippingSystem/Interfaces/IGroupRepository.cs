@@ -21,5 +21,7 @@ namespace ShippingSystem.Repositories
         /// <param name="pageSize"></param>
         /// <returns></returns>
         public Task<IEnumerable<Group?>> GetGroupsAsync(int pageNumber, int pageSize);
+
+        Task<IEnumerable<Group?>> GetGroupsAsync();
     }
 }

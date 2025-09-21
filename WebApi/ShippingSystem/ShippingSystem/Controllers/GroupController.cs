@@ -41,6 +41,21 @@ namespace ShippingSystem.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> GetAllGroupsAsync()
+        {
+            try
+            {
+                var groups = await groupControllerService.GetAllGroupsAsync();
+                return Ok(groups);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         /// <summary>
         /// get group by id
         /// </summary>
@@ -134,13 +149,13 @@ namespace ShippingSystem.Controllers
         {
             try
             {
-                var existingGroup = await groupControllerService.GetGroupByIdAsync(id);
+                //var existingGroup = await groupControllerService.GetGroupByIdAsync(id);
 
-                if (existingGroup == null)
-                {
-                    return NotFound(new { message = "Old role doesn't exist" });
-                }
-                await groupControllerService.UpdateGroupAsync(existingGroup, groupDTO);
+                //if (existingGroup == null)
+                //{
+                //    return NotFound(new { message = "Old role doesn't exist" });
+                //}
+                await groupControllerService.UpdateGroupAsync(groupDTO);
                 return Ok(new { message = "Role Updated Successfully" });
             }
             catch (Exception ex)

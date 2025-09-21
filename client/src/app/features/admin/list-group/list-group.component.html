@@ -90,7 +90,7 @@
       <tbody class="text-center">
         <tr *ngFor="let group of groups; let i = index">
           <td class="text-center d-flex justify-content-center gap-3">
-            <i (click)="deleteGroup(group.id)" class="text-center bi bi-trash fs-5 text-danger"
+            <i  class="text-center bi bi-trash fs-5 text-danger"
               [ngStyle]="{cursor: 'pointer'}"></i>
             <i  class="text-center bi bi-pencil-square fs-5 text-warning"
               [ngStyle]="{cursor: 'pointer'}"  [routerLink]="['/employee','groups','edit',group.id]"></i>

@@ -8,16 +8,24 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { BranchModule } from '../branch/branch.module';
+import { MatFormField, MatFormFieldControl, MatLabel } from "@angular/material/form-field";
+import { MatSelectTrigger, MatSelect } from "@angular/material/select";
+import { MatOptionModule, MatOption } from "@angular/material/core";
 
 
 @NgModule({
-  declarations: [AddEmployeeComponent,EmployeeListComponent,],
+  declarations: [AddEmployeeComponent,EmployeeListComponent],
   imports: [
     CommonModule,
     EmployeeRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    BranchModule
-  ]
+    BranchModule,
+    MatOption,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger
+]
 })
 export class EmployeeModule { }

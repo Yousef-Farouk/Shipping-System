@@ -5,8 +5,11 @@ namespace ShippingSystem.Services
 {
     public interface IGroupControllerService
     {
-        public Task<IEnumerable<Group>> GetAllGroupsAsync(int pageNumber, int pageSize);
-        
+        public Task<IEnumerable<GetAllGroupsDTO?>> GetAllGroupsAsync(int pageNumber, int pageSize);
+
+        public Task<IEnumerable<GetAllGroupsDTO?>> GetAllGroupsAsync();
+
+
         public Task<Group> GetGroupByIdAsync(int id);
 
         public Task<GroupDTO> GetGroupDTOByIdAsync(int id);
@@ -16,7 +19,7 @@ namespace ShippingSystem.Services
 
         public Task<Group> AddGroupAsync(GroupDTO groupDTO);
 
-        public Task UpdateGroupAsync(Group group, GroupDTO groupDTO);
+        public Task UpdateGroupAsync(GroupDTO groupDTO);
 
         public Task DeleteGroupAsync(Group group);
 

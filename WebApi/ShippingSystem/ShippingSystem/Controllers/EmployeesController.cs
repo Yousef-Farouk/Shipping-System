@@ -107,7 +107,7 @@ namespace ShippingSystem.Controllers
 
         // PUT: api/Employees/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployee(string id, EmployeeDTO employeeDto)
+        public async Task<IActionResult> UpdateEmployee([FromRoute] string id, EmployeeDTO employee)
         {
             if (!ModelState.IsValid)
             {
@@ -116,7 +116,7 @@ namespace ShippingSystem.Controllers
             }
             try
             {
-                var result =  await employeeService.UpdateEmployee(id,employeeDto);
+                var result =  await employeeService.UpdateEmployee(employee);
                 if (!result.Succeeded)
                 {
                     return BadRequest(result.Errors);

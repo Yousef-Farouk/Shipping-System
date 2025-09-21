@@ -15,7 +15,7 @@ export class EmployeeService extends ApiService<Employee> {
 
   constructor(http:HttpClient , @Inject('apiUrl') protected apiUrl:string ) 
   {
-    super(http,environment.apiUrl+'employees')
+    super(http,environment.apiUrl+'Employees')
   }
 
 

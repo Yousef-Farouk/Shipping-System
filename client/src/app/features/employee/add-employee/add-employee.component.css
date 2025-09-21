@@ -42,3 +42,8 @@ input.ng-invalid.ng-touched {
   max-width: 75%;
 }
 h2{text-align: right;}
+
+
+.white-background {
+  --mdc-filled-text-field-container-color: #fff;
+}

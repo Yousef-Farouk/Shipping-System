@@ -19,7 +19,7 @@ import { Observable, of } from 'rxjs';
 export class AddPrivilegeComponent implements OnInit {
   groupForm: FormGroup;
   privileges: PrivilegeDTO[] = [];
-  groupId: string | null = null;
+  groupId: number | null= null;
   addMode: boolean = true;
   groupNameInEditMode: string | null = null;
   userPrivileges: GroupPrivilegeDTO[] = [];
@@ -45,8 +45,8 @@ export class AddPrivilegeComponent implements OnInit {
 
   ngOnInit() {
     console.log("activated route" + this.activatedRoute);
-    this.route.paramMap.subscribe(params => {
-      this.groupId = params.get('id');
+    this.route.params.subscribe(params => {
+      this.groupId = params['id'];
       if (this.groupId) {
         this.addMode = false;
         this.groupService.getGroupDTOById(this.groupId).subscribe({
@@ -127,6 +127,7 @@ export class AddPrivilegeComponent implements OnInit {
 
     const selectedPrivileges: GroupPrivilegeDTO[] = this.getSelectedPrivileges();
     const newGroup: GroupDTO = {
+      Id : this.groupId ,
       name: this.groupForm.value.groupName,
       groupPrivileges: selectedPrivileges 
     };
@@ -155,7 +156,8 @@ export class AddPrivilegeComponent implements OnInit {
   }
 
   private handleSuccess(message: string) {
-    this.router.navigate(['../'],{relativeTo : this.activatedRoute});
+    //this.router.navigate(['../../'],{relativeTo : this.activatedRoute});
+      this.router.navigate(['/employee/groups']);
     const snackBarRef = this.snackBar.open(message, 'إغلاق', {
       duration: 3000,
       horizontalPosition: 'center',

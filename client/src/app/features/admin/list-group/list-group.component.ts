@@ -72,36 +72,36 @@ export class ListGroupComponent implements OnInit {
     this.router.navigate(['/employee/editGroup', group.id]);
   }
 
-  deleteGroup(groupId: string) {
-    console.log(`group id: ${groupId}`);
-    this.groupService.deleteGroup(groupId).subscribe({
-      next: (response) => {
-        this.loadGroups();
-        console.log(`response : ${response}`)
-        const snackBarRef = this.snackBar.open('تم حذف المجموعة بنجاح', 'إغلاق', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          direction: 'rtl'
-        });
-        snackBarRef.onAction().subscribe(() => {
-          snackBarRef.dismiss();
-        });
-      },
-      error: (error) => {
-        console.error('Error deleting group:', error);
-        const snackBarRef = this.snackBar.open('حدث خطأ أثناء حذف المجموعة', 'إغلاق', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          direction: 'rtl'
-        });
-        snackBarRef.onAction().subscribe(() => {
-          snackBarRef.dismiss();
-        });
-      }
-    });
-  }
+  // deleteGroup(groupId: number) {
+  //   console.log(`group id: ${groupId}`);
+  //   this.groupService.deleteGroup(groupId).subscribe({
+  //     next: (response) => {
+  //       this.loadGroups();
+  //       console.log(`response : ${response}`)
+  //       const snackBarRef = this.snackBar.open('تم حذف المجموعة بنجاح', 'إغلاق', {
+  //         duration: 3000,
+  //         horizontalPosition: 'center',
+  //         verticalPosition: 'top',
+  //         direction: 'rtl'
+  //       });
+  //       snackBarRef.onAction().subscribe(() => {
+  //         snackBarRef.dismiss();
+  //       });
+  //     },
+  //     error: (error) => {
+  //       console.error('Error deleting group:', error);
+  //       const snackBarRef = this.snackBar.open('حدث خطأ أثناء حذف المجموعة', 'إغلاق', {
+  //         duration: 3000,
+  //         horizontalPosition: 'center',
+  //         verticalPosition: 'top',
+  //         direction: 'rtl'
+  //       });
+  //       snackBarRef.onAction().subscribe(() => {
+  //         snackBarRef.dismiss();
+  //       });
+  //     }
+  //   });
+  // }
 
   searchGroups() {
     this.searchTerm = this.searchTerm.toLowerCase();

@@ -20,6 +20,9 @@ namespace ShippingSystem.UnitOfWorks
 
         public GroupPrivilegeRepository GroupPrivilegeRepository { get; }
 
+        public IUserGroupsRepository UserGroupsRepository { get; }
+
+
         Task<int> Save();
     }
 }

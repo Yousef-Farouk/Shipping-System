@@ -17,35 +17,84 @@ namespace ShippingSystem.Services
     {
         public MappingProfile()
         {
-            CreateMap<ApplicationUser, UserDetailsDTO>().ReverseMap();
-            
+
             //CreateMap<ApplicationUser, RegisterDTO>().ReverseMap();
 
-            CreateMap<ApplicationUser, RegisterDTO>()
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
-                .ReverseMap();
+            #region Users
+
+                CreateMap<ApplicationUser, UserDetailsDTO>().ReverseMap();
+                CreateMap<ApplicationUser, RegisterDTO>()
+                  .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                  .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
+                  .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserName))
+                  .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                  .ReverseMap();
+
+            CreateMap<EmployeeDTO, Employee>()
+             .ForMember(dest => dest.Branch_Id, opt => opt.MapFrom(src => src.BranchId))
+             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone))
+             //.ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password))
+             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+             .ForMember(dest => dest.UserGroups, opt => opt.MapFrom(src => src.Groups))
+             .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+
+
+            CreateMap<Employee, EmployeeDTO>()
+             .ForMember(dest => dest.Groups, opt => opt.MapFrom(src => src.UserGroups.Where(ug => ug.UserId == src.Id)))
+             .ForMember(dest => dest.BranchId, opt => opt.MapFrom(src => src.Branch_Id))
+             .ForMember(dest => dest.BranchName, opt => opt.MapFrom(src => src.Branch.Name))
+            //.ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
+             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
+
+            #endregion
+
+
+
+
+            #region Groups
+
+            //CreateMap<Group, GroupDTO>()
+            //.ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.Privileges))
+            //.ReverseMap()
+            //.ForMember(dest => dest.Privileges, opt => opt.MapFrom(src => src.GroupPrivileges));
+
+            CreateMap<Group, GetAllGroupsDTO>()
+             .ReverseMap();
+
 
             CreateMap<Group, GroupDTO>()
-                .ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.Privileges))
-                .ReverseMap()
-                .ForMember(dest => dest.Privileges, opt => opt.MapFrom(src => src.GroupPrivileges));
+               .ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.Privileges))
+               //.ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.Privileges))
+               .ReverseMap();
+
+            CreateMap<UserGroups, UserGroupDto>()
+               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GroupId))
+               .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Group.Name));
+
+            CreateMap<UserGroupDto, UserGroups>()
+               .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<UserGroupDto, Group>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name));
+
+
 
             CreateMap<GroupResponseDTO, GroupDTO>()
-                .ForMember(dest => dest.Name, opt=>opt.MapFrom(src=>src.Name))
-                .ForMember(dest => dest.GroupPrivileges, opt=>opt.MapFrom(src=>src.GroupPrivileges))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.GroupPrivileges))
                 .ReverseMap();
 
             CreateMap<GroupResponseDTO, Group>()
-                .ForMember(dest => dest.Name, opt=>opt.MapFrom(src=>src.Name))
-                .ForMember(dest => dest.Date, opt=>opt.MapFrom(src=>src.DateAdded))
-                .ForMember(dest => dest.Privileges, opt=>opt.MapFrom(src=>src.GroupPrivileges))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.DateAdded))
+                .ForMember(dest => dest.Privileges, opt => opt.MapFrom(src => src.GroupPrivileges))
                 .ReverseMap();
 
             CreateMap<GroupPrivilegeDTO, GroupPrivilege>()
-                .ForMember(dest => dest.Privelege_Id, opt => opt.MapFrom(src => src.Privelege_Id))
+                //.ForMember(dest => dest.Privelege_Id, opt => opt.MapFrom(src => src.Privelege_Id))
+                //.ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.GroupId))
                 .ForMember(dest => dest.Add, opt => opt.MapFrom(src => src.Add))
                 .ForMember(dest => dest.Delete, opt => opt.MapFrom(src => src.Delete))
                 .ForMember(dest => dest.View, opt => opt.MapFrom(src => src.View))
@@ -56,12 +105,14 @@ namespace ShippingSystem.Services
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
+            CreateMap<PrivilegeDTO, Privilege>();
+
+            #endregion
 
 
-           CreateMap<PrivilegeDTO, Privilege>();
-              
 
 
+            #region Location
 
             CreateMap<Governate, GovernateDto>().ReverseMap();
 
@@ -70,39 +121,31 @@ namespace ShippingSystem.Services
             CreateMap<City, CityDto>()
             .ForMember(dest => dest.Governate_Id, opt => opt.MapFrom(src => src.Governate.Id));
 
+            #endregion
+
+
+
+            #region Orders
+
             CreateMap<Order, OrderDto>()
-             .ForMember(dest => dest.MerchantName, opt => opt.MapFrom(src => src.Merchant.FullName))
-             .ForMember(dest => dest.GovernateName, opt => opt.MapFrom(src => src.Governate.Name))
-             .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
-            .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.OrderDate.Value.Date)); 
+               .ForMember(dest => dest.MerchantName, opt => opt.MapFrom(src => src.Merchant.FullName))
+               .ForMember(dest => dest.GovernateName, opt => opt.MapFrom(src => src.Governate.Name))
+               .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
+              .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.OrderDate.Value.Date));
 
 
             CreateMap<OrderDto, Order>();
 
             CreateMap<Order, OrderDto>().ReverseMap();
-            //CreateMap<Employee, EmployeeDTO>()
-            //.ForMember(dest => dest.Roles, opt => opt.MapFrom<EmployeeRolesResolver>())
-            // .ForMember(dest => dest.BranchId, opt => opt.MapFrom(src => src.Branch_Id))
-            // .ForMember(dest => dest.BranchName, opt => opt.MapFrom(src => src.Branch.Name))
-            // .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
-            // .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
 
             CreateMap<ProductOrderDto, ProductOrder>().ReverseMap();
 
-            CreateMap<EmployeeDTO, Employee>()
-             .ForMember(dest => dest.Branch_Id, opt => opt.MapFrom(src => src.BranchId))
-             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone))
-             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password))
-             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-             .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            #endregion
 
 
-            CreateMap<Employee, EmployeeDTO>()
-             .ForMember(dest => dest.Roles, opt => opt.MapFrom<EmployeeRolesResolver>())
-             .ForMember(dest => dest.BranchId, opt => opt.MapFrom(src => src.Branch_Id))
-             .ForMember(dest => dest.BranchName, opt => opt.MapFrom(src => src.Branch.Name))
-             .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
-             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
+
+
 
         }
     }

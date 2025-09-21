@@ -1,4 +1,7 @@
-﻿namespace ShippingSystem.DTOs
+﻿using ShippingSystem.DTOs.Groups;
+using ShippingSystem.Models;
+
+namespace ShippingSystem.DTOs
 {
     public class EmployeeDTO
     {
@@ -18,7 +21,7 @@
 
         public string? BranchName { get; set; }
 
-        public List<string>? Roles { get; set; } 
+        public List<UserGroupDto>? Groups { get; set; } 
 
         public bool? Status { get; set; }
     }

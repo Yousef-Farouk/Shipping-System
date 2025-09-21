@@ -16,7 +16,7 @@ export class GroupService {
   getGroupById(id: string): Observable<Group> {
     return this.http.get<Group>(`${this.apiUrl}/${id}`);
   }
-  getGroupDTOById(id: string): Observable<GroupDTO> {
+  getGroupDTOById(id: number): Observable<GroupDTO> {
     const uri = `${this.apiUrl}/GetGroupDTO/${id}`;
     console.log(`URI: ${uri}`);
     return this.http.get<GroupDTO>(uri);
@@ -32,10 +32,14 @@ export class GroupService {
   }
 
   getAllGroups(pageNumber: number, pageSize: number): Observable<Group[]> {
-    return this.http.get<Group[]>(`${this.apiUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    return this.http.get<Group[]>(`${this.apiUrl}?pageNumber=${pageNumber ?? ''}&pageSize=${pageSize ?? ''}`);
   }
 
-  updateGroup(groupId: string, groupDTO: GroupDTO): Observable<any> {
+  getAllGroupsLookUp(): Observable<Group[]> {
+    return this.http.get<Group[]>(`${this.apiUrl}/all`);
+  }
+
+  updateGroup(groupId: number, groupDTO: GroupDTO): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/UpdateGroup/${groupId}`, groupDTO);
   }
 

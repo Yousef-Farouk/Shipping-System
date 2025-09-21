@@ -12,16 +12,31 @@ namespace ShippingSystem.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public GroupControllerService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ShippingContext dbContext;
+
+        public GroupControllerService(IUnitOfWork unitOfWork, IMapper mapper,ShippingContext _dbContext)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            dbContext = _dbContext;
         }
 
-        public async Task<IEnumerable<Group?>> GetAllGroupsAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<GetAllGroupsDTO?>> GetAllGroupsAsync(int pageNumber, int pageSize)
         {
-            return await unitOfWork.GroupRepository.GetGroupsAsync(pageNumber, pageSize);
+            var groups = await unitOfWork.GroupRepository.GetGroupsAsync(pageNumber, pageSize);
+
+            return mapper.Map<IEnumerable<GetAllGroupsDTO>>(groups);
         }
+
+
+        public async Task<IEnumerable<GetAllGroupsDTO?>> GetAllGroupsAsync()
+        {
+            var groups = await unitOfWork.GroupRepository.GetGroupsAsync();
+
+            return mapper.Map<IEnumerable<GetAllGroupsDTO>>(groups);
+        }
+
+
 
         public async Task<Group> GetGroupByIdAsync(int id)
         {
@@ -53,46 +68,52 @@ namespace ShippingSystem.Services
             return group;
         }
 
-        public async Task UpdateGroupAsync(Group existingGroup, GroupDTO groupDTO)
+        public async Task UpdateGroupAsync(GroupDTO groupDTO)
         {
-            //try
-            //{
-            //    existingGroup.Name = groupDTO.Name;
-            //    existingGroup.NormalizedName = groupDTO.Name.ToUpper();
+            try
+            {
+                //existingGroup.Name = groupDTO.Name;
+                // existingGroup.NormalizedName = groupDTO.Name.ToUpper();
 
-            //    var existingPrivileges = existingGroup.Privileges.ToList();
+                //var existingPrivileges = existingGroup.Privileges.ToList();
 
-            //    foreach (var existingPrivilege in existingPrivileges)
-            //    {
-            //        if (!groupDTO.GroupPrivileges.Any(p => p.Privelege_Id == existingPrivilege.Privelege_Id))
-            //        {
-            //            await unitOfWork.GroupPrivilegeRepository.Delete(existingPrivilege);
-            //        }
-            //    }
+                //foreach (var existingPrivilege in existingPrivileges)
+                //{
+                //    if (!groupDTO.GroupPrivileges.Any(p => p.Privelege_Id == existingPrivilege.Privelege_Id))
+                //    {
+                //        await unitOfWork.GroupPrivilegeRepository.Delete(existingPrivilege);
+                //    }
+                //}
 
-            //    foreach (var privilegeDTO in groupDTO.GroupPrivileges)
-            //    {
-            //        var existingPrivilege = existingPrivileges.FirstOrDefault(p => p.Privelege_Id == privilegeDTO.Privelege_Id);
+                //foreach (var privilegeDTO in groupDTO.GroupPrivileges)
+                //{
+                //    var existingPrivilege = existingPrivileges.FirstOrDefault(p => p.Privelege_Id == privilegeDTO.Privelege_Id);
 
-            //        if (existingPrivilege != null) 
-            //        {
-            //            mapper.Map(privilegeDTO, existingPrivilege);
-            //        } 
-            //        else 
-            //        {
-            //            var newPrivilege = mapper.Map<GroupPrivilege>(privilegeDTO);
-            //           // newPrivilege.GroupId = existingGroup.Id;
-            //            existingGroup.Privileges.Add(newPrivilege);
-            //        }
-            //    }
+                //    if (existingPrivilege != null)
+                //    {
+                //        mapper.Map(privilegeDTO, existingPrivilege);
+                //    }
+                //    else
+                //    {
+                //        var newPrivilege = mapper.Map<GroupPrivilege>(privilegeDTO);
+                //        // newPrivilege.GroupId = existingGroup.Id;
+                //        existingGroup.Privileges.Add(newPrivilege);
+                //    }
+                //}
 
-            //    await unitOfWork.GroupRepository.Update(existingGroup);
-            //    await unitOfWork.Save();
-            //}
-            //catch (DbUpdateConcurrencyException ex)
-            //{
-            //    throw new DbUpdateConcurrencyException("Concurrency conflict occurred.", ex);
-            //}
+                var existingGroup = await unitOfWork.GroupRepository.GetById(groupDTO.Id);
+
+                //  existingGroup = mapper.Map<Group>(groupDTO);
+                mapper.Map(groupDTO,existingGroup);
+                unitOfWork.GroupRepository.Update(existingGroup);
+                var entityState = dbContext.Entry(existingGroup).State;
+                Console.WriteLine($"The state of the group is: {entityState}"); // Check your output console
+                unitOfWork.Save();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Concurrency conflict occurred.", ex);
+            }
 
         }
 

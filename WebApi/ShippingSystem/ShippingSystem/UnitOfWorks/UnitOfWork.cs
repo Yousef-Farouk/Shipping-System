@@ -20,6 +20,8 @@ namespace ShippingSystem.UnitOfWorks
 
         private IEmployeeRepository employeeRepository;
 
+        IUserGroupsRepository userGroupsRepository;
+
         public UnitOfWork(ShippingContext dbContext )
         { 
             this.dbContext = dbContext;
@@ -93,6 +95,22 @@ namespace ShippingSystem.UnitOfWorks
             }
         }
 
+
+        public IUserGroupsRepository UserGroupsRepository
+        {
+            get
+            {
+                if (userGroupsRepository == null)
+                {
+                    userGroupsRepository = new UserGroupsRepository(dbContext);
+                }
+
+                return userGroupsRepository;
+            }
+        }
+
+
+
         public async Task<int> Save()
         {
             return await dbContext.SaveChangesAsync();
@@ -121,5 +139,6 @@ namespace ShippingSystem.UnitOfWorks
         {
             get { return groupPrivilegeRepository ??= new GroupPrivilegeRepository(dbContext); }
         }
+
     }
 }

@@ -39,7 +39,12 @@
                   <input class="form-check-input fs-5 " type="checkbox" role="switch" name="status"  id="flexSwitchCheckDefault" dir="rtl" [checked]="employee.status">
                 </div>    
               </td>
-              <td class="text-center">{{ employee.roles }}</td>
+              <!-- <td class="text-center" *ngFor="let group of employee.groups">{{group.name}}</td> -->
+               <td class="text-center">
+                <span *ngFor="let group of employee.groups; let isLast = last">
+                  {{ group.name }}{{ !isLast ? ' , ' : '' }}
+                </span>
+              </td>
               <td class="text-center">{{ employee.branchName}}</td>
               <td class="text-center">{{ employee.phone }}</td>
               <td class="text-center">{{ employee.email }}</td>

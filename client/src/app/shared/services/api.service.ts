@@ -3,6 +3,7 @@ import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable,Inject } from '@angular/core';
 import { environment} from '../../../environments/environment'
+import { Employee } from '../../Models/Employee';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class ApiService<T> {
     return this.http.post<T>(this.apiUrL, item)
   }
 
-  editItem(itemId: number|string, item: any): Observable<T> {
+  editItem(itemId : number | string,item: T): Observable<T> {
     return this.http.put<T>(`${this.apiUrL}/${itemId}`, item) 
   }
 

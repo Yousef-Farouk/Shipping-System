@@ -49,8 +49,6 @@ export class EmployeeListComponent implements OnInit {
   }
 
   search(){
-
-
     this.employeeService.searchByName(this.employeeName).subscribe({
       next:(data:Employee)=>{
         this.employees = []
@@ -83,4 +81,7 @@ export class EmployeeListComponent implements OnInit {
         }
     })
   }
+
+  
+
 }

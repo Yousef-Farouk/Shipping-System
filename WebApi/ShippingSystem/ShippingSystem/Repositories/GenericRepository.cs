@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShippingSystem.Models;
+using System.Runtime.InteropServices;
 
 namespace ShippingSystem.Repositories
 {
@@ -69,7 +70,7 @@ namespace ShippingSystem.Repositories
         /// <param name="obj"></param>
         public async Task Update(T obj)
         {
-            db.Set<T>().Update(obj);
+           db.Set<T>().Update(obj);
         }
 
         /// <summary>

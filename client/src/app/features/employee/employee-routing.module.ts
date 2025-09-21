@@ -20,16 +20,8 @@ const routes: Routes = [
   {path: 'add', component:AddEmployeeComponent},
   {path: 'all', component:EmployeeListComponent},
   {path: 'edit/:id',component:AddEmployeeComponent},
- // {path: 'addGroup',component: AddPrivilegeComponent },
- // {path: 'myGroups',component: ListGroupComponent },
-  //{path:'branch',component:BranchTableComponent},
   {path:'merchant/all',component:MerchantListComponent},
   {path:'representative/all',component:RepresentativeTableComponent},
-  //{path:'city',component:CityComponent},
- // {path:'governate',component:GovernateComponentComponent},
-  // {path:'village-cost',component:VillageCostComponent},
-  // {path:'order/all',component:AllOrdersComponent},
-  // {path:'order/reports',component:OrderReportsComponent},
   {
     path : 'branch',
     loadChildren : () => import('../branch/branch.module').then(m => m.BranchModule)
@@ -49,8 +41,6 @@ const routes: Routes = [
     path : 'groups',
     loadChildren : () => import('../admin/admin.module').then(m => m.AdminModule)
   }
-  
-
 
 ];
 
