@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrivilegeService } from '../Services/privilege.service';
 import { GroupService } from '../Services/group.service';
@@ -102,7 +102,9 @@ export class AddPrivilegeComponent implements OnInit {
         Add: [curUserPrivilege ? curUserPrivilege.add : false],
         Update: [curUserPrivilege ? curUserPrivilege.update : false],
         View: [curUserPrivilege ? curUserPrivilege.view : false],
-        Delete: [curUserPrivilege ? curUserPrivilege.delete : false]
+        Delete: [curUserPrivilege ? curUserPrivilege.delete : false],
+        GroupId:[this.groupId ?? null ]
+        
       });
     });
     const privilegeFormArray = this.fb.array(privilegeFGs);
@@ -111,11 +113,11 @@ export class AddPrivilegeComponent implements OnInit {
 
   getSelectedPrivileges(): GroupPrivilegeDTO[] {
 
-    let selectedPrivileges = this.privilegesFormArray.controls
+    let selectedPrivileges  = this.privilegesFormArray.controls
       .filter(control => control.value.Add || control.value.Update || control.value.View || control.value.Delete)
       .map(control => control.value);
     
-      console.log("selectedPriv: " + selectedPrivileges);
+    //console.log("selectedPriv: " + this.privilegesFormArray.controls.map(fm=> fm.value));
     return selectedPrivileges
   }
 

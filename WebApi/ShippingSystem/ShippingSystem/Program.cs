@@ -1,4 +1,5 @@
 ﻿
+using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using ShippingSystem.Models;
 using ShippingSystem.Repositories;
 using ShippingSystem.Services;
 using ShippingSystem.UnitOfWorks;
+using System.Reflection;
 using System.Text;
 
 namespace ShippingSystem
@@ -75,6 +77,17 @@ namespace ShippingSystem
             builder.Services.AddScoped<IGenericRepository<VillageCost>, GenericRepository<VillageCost>>();
             builder.Services.AddScoped<WeightOptionService>();
             builder.Services.AddScoped<VillageCostService>();
+
+
+            var config = new TypeAdapterConfig();
+
+            config.Scan(Assembly.GetExecutingAssembly());
+
+            // 3. Register the configured config object as a singleton
+            builder.Services.AddSingleton(config);
+
+            // 4. Add Mapster's services using the customized config
+            builder.Services.AddMapster();
 
 
 

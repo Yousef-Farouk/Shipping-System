@@ -93,5 +93,10 @@ namespace ShippingSystem.Repositories
 
             db.Set<T>().Remove(obj);
         }
+
+        public async Task DeleteRange(ICollection<T> obj)
+        {
+            db.Set<T>().RemoveRange(obj);
+        }
     }
 }

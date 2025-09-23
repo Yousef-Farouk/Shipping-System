@@ -18,5 +18,7 @@ namespace ShippingSystem.Services
 
         public Task<List<GroupPrivilegeDTO?>> GetPrivilegesByGroupNameAsync(string groupName);
         public Task<string> GetRoleIdAsync(ClaimsPrincipal userClaims);
+
+        public Task<List<GroupPrivilegeDTO?>> GetUserGroupPrivelegeAsync(string userId);
     }
 }

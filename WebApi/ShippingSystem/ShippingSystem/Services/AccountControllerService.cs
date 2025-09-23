@@ -10,12 +10,14 @@ using ShippingSystem.DTOs.Authentication;
 using ShippingSystem.DTOs.Groups;
 using ShippingSystem.DTOs.Passwords;
 using ShippingSystem.Models;
+using ShippingSystem.Repositories;
 using ShippingSystem.UnitOfWorks;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace ShippingSystem.Services
 {
@@ -42,9 +44,18 @@ namespace ShippingSystem.Services
         }
         private async Task<string>  GenerateToken(ApplicationUser applicationUser, bool? rememberMe)
         {
+           // var userGoups = await unitOfWork.UserGroupsRepository.GetUserGroupsAsync(applicationUser.Id);
+
+            var groupPriveleges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByUserId(applicationUser.Id);
+
+            var Dto = mapper.Map<List<GroupPrivilegeDTO?>>(groupPriveleges);
+
+
+            var privielegeJson = JsonSerializer.Serialize(Dto);
             List<Claim> claims = new List<Claim>
             {
-                //new Claim(JwtRegisteredClaimNames.NameId, applicationUser.Id ?? ""),
+                new Claim("userId", applicationUser.Id ?? ""),
+                new Claim("groupPrivelege",privielegeJson)
                 //new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email ?? ""),
                 //new Claim(JwtRegisteredClaimNames.Name, applicationUser.FullName ?? ""),
                 //new Claim(JwtRegisteredClaimNames.Iss, configuration.GetSection("JwtSettings").GetSection("ValidIssuer").Value ?? ""),
@@ -52,7 +63,7 @@ namespace ShippingSystem.Services
                 //new Claim("phoneNumber", applicationUser.PhoneNumber ?? ""),
                 //new Claim("phoneNumberConfirmed", applicationUser.PhoneNumberConfirmed.ToString() ?? ""),
                 //new Claim("twoFactorEnabled", applicationUser.TwoFactorEnabled.ToString() ?? ""),
-                //new Claim("accessFailedCount", applicationUser.AccessFailedCount.ToString() ?? "")
+                //new Claim("grouoId", )
             };
 
             //var roles = await userManager.GetRolesAsync(applicationUser);
@@ -281,7 +292,7 @@ namespace ShippingSystem.Services
         public async Task<string> GetRoleIdAsync(ClaimsPrincipal userClaims)
         {
             //return await unitOfWork.EmployeeRepository.GetRoleIdByUserId(ClaimTypes.NameIdentifier);
-            var userId = userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = userClaims.FindFirstValue("userId");
             if (string.IsNullOrEmpty(userId))
             {
                 throw new Exception("User ID is not found in the claims.");
@@ -298,6 +309,20 @@ namespace ShippingSystem.Services
             }
             var groupPrivileges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByGroupId(group.Id);
             return mapper.Map<List<GroupPrivilegeDTO?>>(groupPrivileges);
+        }
+
+        public async Task<List<GroupPrivilegeDTO?>> GetUserGroupPrivelegeAsync(string userId)
+        {
+            var userGoups = await unitOfWork.UserGroupsRepository.GetUserGroupsAsync(userId);
+
+            var groupPriveleges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByGroupId(userGoups);
+
+            //if (group == null)
+            //{
+            //    return new List<GroupPrivilegeDTO?>();
+            //}
+            //var groupPrivileges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByGroupId(group.Id);
+            return mapper.Map<List<GroupPrivilegeDTO?>>(groupPriveleges);
         }
     }
 }

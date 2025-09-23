@@ -29,5 +29,21 @@ namespace ShippingSystem.Repositories
 
             return null;
         }
+
+        public async Task<IEnumerable<GroupPrivilege?>> GetGroupPrivilegesByGroupId(IEnumerable<UserGroups> userGroups)
+        {
+            var userGroupIds = userGroups.Select(ug => (int?)ug.GroupId).ToList(); 
+            return await context.GroupPrivilege.Where(gp => userGroupIds.Contains(gp.GroupId)).ToListAsync();
+        }
+
+        public async Task<IEnumerable<GroupPrivilege?>> GetGroupPrivilegesByUserId(string userId)
+        {
+
+            return await context.UserGroups.Where(us => us.UserId == userId)
+                                    .Join(context.GroupPrivilege,
+                                          userGroup => userGroup.GroupId,
+                                          groupPrivelege => groupPrivelege.GroupId,
+                                          (userGroup, groupPrivelege) => groupPrivelege).ToListAsync();
+        }
     }
 }

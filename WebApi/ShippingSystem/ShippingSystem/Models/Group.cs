@@ -10,7 +10,7 @@
 
         public bool IsDeleted { get; set; }
 
-        public virtual ICollection<GroupPrivilege> Privileges { get; set; } = new List<GroupPrivilege>();
+        public virtual ICollection<GroupPrivilege> GroupPrivilege { get; set; }
 
         public virtual IList<UserGroups> UserGroups { get; set; }
 

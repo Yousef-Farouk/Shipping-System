@@ -12,6 +12,7 @@ namespace ShippingSystem.Repositories
             return await db.UserGroups.Where(us => us.UserId == userId).ToListAsync();
         }
 
+
         public async Task RemoveUserGroupsAsync(ApplicationUser user)
         {
              db.UserGroups.RemoveRange(user.UserGroups);

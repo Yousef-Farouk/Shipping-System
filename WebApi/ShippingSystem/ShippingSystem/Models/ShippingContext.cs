@@ -43,6 +43,9 @@ namespace ShippingSystem.Models
 
         public DbSet<UserGroups>? UserGroups { get; set; }
 
+        public DbSet<GroupPrivilege>? GroupPrivilege { get; set; }
+
+
 
         public ShippingContext(DbContextOptions<ShippingContext> options) : base(options)
         {

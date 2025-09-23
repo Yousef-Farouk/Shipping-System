@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using ShippingSystem.DTOs.Authentication;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using RestSharp;
 using ShippingSystem.Models;
 using ShippingSystem.Services;
 using Server.DTOs.Passwords;
@@ -221,12 +220,13 @@ namespace ShippingSystem.Controllers
         }
 
         [HttpGet("GetUserPrivilegesByUserId")]
+        //[Authorize]
         public async Task<ActionResult> GetUserPrivilegesByUserId()
         {
             try
             {
-                var roleId = await accountControllerService.GetRoleIdAsync(User);
-                var groupPrivielgesDTO = await accountControllerService.GetPrivilegesByGroupNameAsync(roleId);
+                //var roleId = await accountControllerService.GetRoleIdAsync(User) ;
+                var groupPrivielgesDTO = await accountControllerService.GetUserGroupPrivelegeAsync(User.FindFirstValue("userId"));
                 return Ok(groupPrivielgesDTO);
             }
             catch (Exception ex)

@@ -16,6 +16,9 @@
 
         public Task Delete(string id);
 
+        public Task DeleteRange(ICollection<T> obj);
+
+
         public Task Delete(T obj);
 
         public Task<int> Save();

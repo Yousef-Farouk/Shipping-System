@@ -1,24 +1,31 @@
 ﻿using AutoMapper;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using ShippingSystem.DTOs.Groups;
 using ShippingSystem.Models;
 using ShippingSystem.Repositories;
 using ShippingSystem.UnitOfWorks;
+using IMapper = MapsterMapper.IMapper;
+using IAutoMapper = AutoMapper.IMapper;
+using Mapster;
 
 namespace ShippingSystem.Services
 {
     public class GroupControllerService : IGroupControllerService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
+        private readonly IAutoMapper mapper;
 
         public ShippingContext dbContext;
 
-        public GroupControllerService(IUnitOfWork unitOfWork, IMapper mapper,ShippingContext _dbContext)
+        public IMapper mapster;
+
+        public GroupControllerService(IUnitOfWork unitOfWork, IAutoMapper mapper,ShippingContext _dbContext,IMapper _mapster)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             dbContext = _dbContext;
+            mapster = _mapster;
         }
 
         public async Task<IEnumerable<GetAllGroupsDTO?>> GetAllGroupsAsync(int pageNumber, int pageSize)
@@ -72,43 +79,45 @@ namespace ShippingSystem.Services
         {
             try
             {
-                //existingGroup.Name = groupDTO.Name;
-                // existingGroup.NormalizedName = groupDTO.Name.ToUpper();
-
-                //var existingPrivileges = existingGroup.Privileges.ToList();
-
-                //foreach (var existingPrivilege in existingPrivileges)
-                //{
-                //    if (!groupDTO.GroupPrivileges.Any(p => p.Privelege_Id == existingPrivilege.Privelege_Id))
-                //    {
-                //        await unitOfWork.GroupPrivilegeRepository.Delete(existingPrivilege);
-                //    }
-                //}
-
-                //foreach (var privilegeDTO in groupDTO.GroupPrivileges)
-                //{
-                //    var existingPrivilege = existingPrivileges.FirstOrDefault(p => p.Privelege_Id == privilegeDTO.Privelege_Id);
-
-                //    if (existingPrivilege != null)
-                //    {
-                //        mapper.Map(privilegeDTO, existingPrivilege);
-                //    }
-                //    else
-                //    {
-                //        var newPrivilege = mapper.Map<GroupPrivilege>(privilegeDTO);
-                //        // newPrivilege.GroupId = existingGroup.Id;
-                //        existingGroup.Privileges.Add(newPrivilege);
-                //    }
-                //}
-
+               
                 var existingGroup = await unitOfWork.GroupRepository.GetById(groupDTO.Id);
 
-                //  existingGroup = mapper.Map<Group>(groupDTO);
-                mapper.Map(groupDTO,existingGroup);
-                unitOfWork.GroupRepository.Update(existingGroup);
+                mapper.Map(groupDTO, existingGroup);
+
+                foreach (var groupPrivilege in groupDTO.GroupPrivileges)
+                {
+                    var existingGroupPrivilege = existingGroup.GroupPrivilege.FirstOrDefault(gp => gp.Privelege_Id == groupPrivilege.Privelege_Id);
+
+                    if (existingGroupPrivilege != null)
+                    {
+                        mapper.Map(groupPrivilege, existingGroupPrivilege);
+
+                    }
+                    else
+                    {
+                        var newGroupPrivilege = mapper.Map<GroupPrivilege>(groupPrivilege);
+                        existingGroup.GroupPrivilege.Add(newGroupPrivilege);
+                    }
+                }
+
+                var privilegeToDelete = existingGroup.GroupPrivilege.Where(gp => !groupDTO.GroupPrivileges.Any(dto => dto.Privelege_Id == gp.Privelege_Id)).ToList();
+
+                if (privilegeToDelete.Any())
+                {
+                    unitOfWork.GroupPrivilegeRepository.DeleteRange(privilegeToDelete);
+                }
+
+                // unitOfWork.GroupRepository.Update(existingGroup);
                 var entityState = dbContext.Entry(existingGroup).State;
                 Console.WriteLine($"The state of the group is: {entityState}"); // Check your output console
                 unitOfWork.Save();
+
+                //groupDTO.Adapt(existingGroup);
+                //unitOfWork.GroupRepository.Update(existingGroup);
+                //var entityState = dbContext.Entry(existingGroup).State;
+                //Console.WriteLine($"The state of the group is: {entityState}"); // Check your output console
+                //unitOfWork.Save();
+
             }
             catch (DbUpdateConcurrencyException ex)
             {

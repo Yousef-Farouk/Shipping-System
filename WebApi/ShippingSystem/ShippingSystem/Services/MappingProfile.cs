@@ -64,9 +64,14 @@ namespace ShippingSystem.Services
 
 
             CreateMap<Group, GroupDTO>()
-               .ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.Privileges))
-               //.ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.Privileges))
-               .ReverseMap();
+              .ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.GroupPrivilege));
+            // .ReverseMap();
+            //  .ForMember(dest => dest.GroupPrivileges, opt => opt.MapFrom(src => src.GroupPrivilege))
+
+
+            CreateMap<GroupDTO, Group>()
+             .ForMember(dest => dest.GroupPrivilege, opt => opt.Ignore());
+
 
             CreateMap<UserGroups, UserGroupDto>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GroupId))
@@ -89,17 +94,27 @@ namespace ShippingSystem.Services
             CreateMap<GroupResponseDTO, Group>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.DateAdded))
-                .ForMember(dest => dest.Privileges, opt => opt.MapFrom(src => src.GroupPrivileges))
+                .ForMember(dest => dest.GroupPrivilege, opt => opt.MapFrom(src => src.GroupPrivileges))
                 .ReverseMap();
 
             CreateMap<GroupPrivilegeDTO, GroupPrivilege>()
-                //.ForMember(dest => dest.Privelege_Id, opt => opt.MapFrom(src => src.Privelege_Id))
-                //.ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.GroupId))
+                .ForMember(dest => dest.Privelege_Id, opt => opt.MapFrom(src => src.Privelege_Id))
+                .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.GroupId))
                 .ForMember(dest => dest.Add, opt => opt.MapFrom(src => src.Add))
                 .ForMember(dest => dest.Delete, opt => opt.MapFrom(src => src.Delete))
                 .ForMember(dest => dest.View, opt => opt.MapFrom(src => src.View))
                 .ForMember(dest => dest.Update, opt => opt.MapFrom(src => src.Update))
-                .ReverseMap();
+                .ForMember(dest => dest.Privilege, opt => opt.Ignore())
+                .ForMember(dest => dest.Group, opt => opt.Ignore());
+
+            CreateMap<GroupPrivilege, GroupPrivilegeDTO>()
+                .ForMember(dest => dest.Privelege_Id, opt => opt.MapFrom(src => src.Privelege_Id))
+                .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.GroupId))
+                .ForMember(dest => dest.Add, opt => opt.MapFrom(src => src.Add))
+                .ForMember(dest => dest.Delete, opt => opt.MapFrom(src => src.Delete))
+                .ForMember(dest => dest.View, opt => opt.MapFrom(src => src.View))
+                .ForMember(dest => dest.Update, opt => opt.MapFrom(src => src.Update));
+
 
             CreateMap<Privilege, PrivilegeDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

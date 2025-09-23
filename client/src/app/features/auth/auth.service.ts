@@ -19,7 +19,9 @@ export class AuthService {
   private tokenKey = 'token';
   private roleKey = 'role';
   private privilegesKey = 'privileges';
+  private userIdKey = 'userId';
 
+  private  grouPriveleges : GroupPrivilegeDTO[] = [] 
   private apiURL = environment.apiUrl;
 
   private httpOptions = {
@@ -33,7 +35,10 @@ export class AuthService {
     private http:HttpClient, 
     private router: Router ,
     private cookieService : CookieService 
-  ) { }
+  ) { 
+
+   this.loadPremission()
+  }
 
   // login(loginCredentials: LoginDTO): Observable<ResponseDTO> {
   //   return this.http.post<ResponseDTO>(`${this.apiURL}Account/Login`, loginCredentials, this.httpOptions).pipe(map(response => {
@@ -61,14 +66,15 @@ export class AuthService {
 
   handleLogin(res:any)
   {
-    console.log(res)
-    const tokenData :string = res.token;
+    const token :string = res.token
+    const tokenData : any = jwtDecode(token)
     const role = res.role ;
-    console.log("token" , tokenData)
-    console.log("role" , role)
-
-    this.cookieService.set('token',tokenData,undefined,undefined,undefined,true,'Strict')
-    this.cookieService.set('role',role,undefined,undefined,undefined,true,'Strict')
+    const userId = tokenData['userId']
+    
+    this.cookieService.set(this.tokenKey,token,undefined,undefined,undefined,true,'Strict')
+    this.cookieService.set(this.roleKey,role,undefined,undefined,undefined,true,'Strict')
+    this.cookieService.set(this.userIdKey,userId,undefined,undefined,undefined,true,'Strict')
+    this.loadPremission()
 
   }
 
@@ -133,5 +139,17 @@ export class AuthService {
       this.logout();
     }
     return isExpired;
+  }
+
+  loadPremission()
+  {
+    const token = this.cookieService.get(this.tokenKey)
+    if(token)
+    {
+        const tokenData :any = jwtDecode(token)
+        this.grouPriveleges = tokenData['groupPrivelege'];
+      //  console.log("groupPrivelege" , this.grouPriveleges)
+    }
+   
   }
 }
