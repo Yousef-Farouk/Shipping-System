@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginDTO } from '../interfaces/login-dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Roles } from '../../../Enums/rolesEnum';
+import { AuthService } from '../../../modules/shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -73,7 +72,7 @@ export class LoginComponent implements OnInit {
           // localStorage.setItem('token', response.token);
           // localStorage.setItem('role', response.role);
           this.authService.handleLogin(response)
-          this.redirectUser(response.role);
+          //this.redirectUser(response.role);
         },
         error: (error) => {
           //console.error('Login failed:', error);
@@ -99,15 +98,15 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private redirectUser(role: string) {
-    if (role === Roles.employee ){
-      this.router.navigate(['/employee']);
-    } else if (role === Roles.representative) {
-      this.router.navigate(['/representative']);
-    } else if (role === Roles.merchant) {
-      this.router.navigate(['/merchant']);
-    }
-  }
+  // private redirectUser(role: string) {
+  //   if (role === Roles.employee ){
+  //     this.router.navigate(['/employee']);
+  //   } else if (role === Roles.representative) {
+  //     this.router.navigate(['/representative']);
+  //   } else if (role === Roles.merchant) {
+  //     this.router.navigate(['/merchant']);
+  //   }
+  // }
 
   // forgetPassword(){
 

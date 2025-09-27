@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../order.service';
-import { OrderStatus } from '../../../Models/Enums';
-import { Order } from '../../../Models/Order';
 import { PageEvent } from '@angular/material/paginator';
+import { OrderStatus } from '../../../modules/shared/Models/Enums';
+import { Order } from '../../../modules/shared/Models/Order';
 
 @Component({
   selector: 'app-order-reports',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../features/auth/auth.service';
+import { AuthService } from '../modules/shared/services/auth.service';
 
 
 @Injectable({
@@ -21,7 +21,7 @@ export class RepresentativeGuard implements CanActivate {
         console.log('representative login succeeded')
         return true;
       }
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
       return false;
   }
   

@@ -1,11 +1,11 @@
-import { City } from '../../../Models/City';
 import { Component, ElementRef, OnInit, ViewChild,Input } from '@angular/core';
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import { FormGroup, FormsModule, ReactiveFormsModule ,FormBuilder,Validators} from '@angular/forms';
 import { Router } from '@angular/router';
-import { CityService } from '../city.service';
-import { Governate } from '../../../Models/Governate';
-import { GovernateServiceService } from '../../governate/governate-service.service';
+import { CityService } from '../../../modules/shared/services/city.service';
+import { GovernateServiceService } from '../../../modules/shared/services/governate-service.service';
+import { Governate } from '../../../modules/shared/Models/Governate';
+import { City } from '../../../modules/shared/Models/City';
 @Component({
   selector: 'app-city-table',
   templateUrl: './city-table.component.html',

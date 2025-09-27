@@ -1,9 +1,9 @@
-import { Governate } from './../../../Models/Governate';
-import { GovernateServiceService } from './../governate-service.service';
+import { GovernateServiceService } from '../../../modules/shared/services/governate-service.service';
 import { Component, ElementRef, OnInit, ViewChild,Input } from '@angular/core';
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import { FormGroup, FormsModule, ReactiveFormsModule ,FormBuilder,Validators} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Governate } from '../../../modules/shared/Models/Governate';
 @Component({
   selector: 'app-governate-component',
   templateUrl: './governate-component.component.html',

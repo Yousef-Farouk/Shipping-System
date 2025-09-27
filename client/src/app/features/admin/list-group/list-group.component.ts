@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from '../../auth/auth.service';
-import { GroupService } from '../Services/group.service';
+import { GroupService } from '../../../modules/shared/services/group.service';
 import { Group } from '../interfaces/group';
 
 @Component({

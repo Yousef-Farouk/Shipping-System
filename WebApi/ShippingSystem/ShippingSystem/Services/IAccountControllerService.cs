@@ -20,5 +20,10 @@ namespace ShippingSystem.Services
         public Task<string> GetRoleIdAsync(ClaimsPrincipal userClaims);
 
         public Task<List<GroupPrivilegeDTO?>> GetUserGroupPrivelegeAsync(string userId);
+
+        public Task<RefreshTokenDto> Refresh(RefreshTokenDto refreshTokenDto);
+       // public ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+
+
     }
 }

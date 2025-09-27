@@ -45,6 +45,7 @@ namespace ShippingSystem.Models
 
         public DbSet<GroupPrivilege>? GroupPrivilege { get; set; }
 
+        public DbSet<RefreshToken>? RefreshToken { get; set; }
 
 
         public ShippingContext(DbContextOptions<ShippingContext> options) : base(options)

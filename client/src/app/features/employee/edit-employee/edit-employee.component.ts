@@ -2,7 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'; // Example imports for form handling
-import { EmployeeService } from '../employee.service'; // Adjust path as per your actual structure
+import { EmployeeService } from '../../../modules/shared/services/employee.service';
 
 @Component({
   selector: 'app-edit-employee',

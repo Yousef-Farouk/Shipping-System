@@ -1,0 +1,32 @@
+﻿
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+
+namespace ShippingSystem.Enumerations
+{
+    public enum Privilege
+    {
+
+            <#
+            // WARNING: Connection string management should be handled more securely in a real app
+            var connectionString = "Data Source=.;Initial Catalog=ShippingSystem;Integrated Security=True;Encrypt=False";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand("SELECT Id,Name FROM Privileges", connection);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+        #>
+                <#= reader["Name"] #> = <#= reader["Id"] #>,
+        <#
+                    }
+                }
+            }
+        #>
+            
+    }
+}

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PrivilegeService } from '../Services/privilege.service';
-import { GroupService } from '../Services/group.service';
+import { PrivilegeService } from '../../../modules/shared/services/privilege.service';
+import { GroupService } from '../../../modules/shared/services/group.service';
 import { GroupDTO } from '../interfaces/group-dto';
 import { PrivilegeDTO } from '../interfaces/privilege-dto';
 import { GroupPrivilegeDTO } from '../interfaces/group-privilege-dto';

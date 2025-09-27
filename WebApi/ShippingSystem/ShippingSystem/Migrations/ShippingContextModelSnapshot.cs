@@ -223,7 +223,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches", (string)null);
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.City", b =>
@@ -250,7 +250,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasIndex("Governate_Id");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.Governate", b =>
@@ -269,7 +269,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Governates", (string)null);
+                    b.ToTable("Governates");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.Group", b =>
@@ -292,7 +292,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Groups", (string)null);
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.GroupPrivilege", b =>
@@ -327,7 +327,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasIndex("Privelege_Id");
 
-                    b.ToTable("GroupPrivilege", (string)null);
+                    b.ToTable("GroupPrivilege");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.Order", b =>
@@ -425,7 +425,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasIndex("Shipping_Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.OrderType", b =>
@@ -441,7 +441,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderTypes", (string)null);
+                    b.ToTable("OrderTypes");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.PaymentType", b =>
@@ -457,7 +457,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentTypes", (string)null);
+                    b.ToTable("PaymentTypes");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.Privilege", b =>
@@ -473,7 +473,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Privileges", (string)null);
+                    b.ToTable("Privileges");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.ProductOrder", b =>
@@ -503,7 +503,33 @@ namespace ShippingSystem.Migrations
 
                     b.HasIndex("Order_Id");
 
-                    b.ToTable("ProductOrders", (string)null);
+                    b.ToTable("ProductOrders");
+                });
+
+            modelBuilder.Entity("ShippingSystem.Models.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.RepresentativeGovernate", b =>
@@ -518,7 +544,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasIndex("Governate_Id");
 
-                    b.ToTable("RepresentativeGovernates", (string)null);
+                    b.ToTable("RepresentativeGovernates");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.Roles", b =>
@@ -570,7 +596,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingTypes", (string)null);
+                    b.ToTable("ShippingTypes");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.SpecialPrice", b =>
@@ -602,7 +628,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasIndex("Merchant_Id");
 
-                    b.ToTable("SpecialPrices", (string)null);
+                    b.ToTable("SpecialPrices");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.UserGroups", b =>
@@ -617,7 +643,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("UserGroups", (string)null);
+                    b.ToTable("UserGroups");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.VillageCost", b =>
@@ -633,7 +659,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VillageCosts", (string)null);
+                    b.ToTable("VillageCosts");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.WeightOption", b =>
@@ -652,7 +678,7 @@ namespace ShippingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WeightOptions", (string)null);
+                    b.ToTable("WeightOptions");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.Employee", b =>
@@ -791,11 +817,11 @@ namespace ShippingSystem.Migrations
             modelBuilder.Entity("ShippingSystem.Models.GroupPrivilege", b =>
                 {
                     b.HasOne("ShippingSystem.Models.Group", "Group")
-                        .WithMany("Privileges")
+                        .WithMany("GroupPrivilege")
                         .HasForeignKey("GroupId");
 
                     b.HasOne("ShippingSystem.Models.Privilege", "Privilege")
-                        .WithMany("Privileges")
+                        .WithMany("GroupPrivilege")
                         .HasForeignKey("Privelege_Id");
 
                     b.Navigation("Group");
@@ -861,6 +887,17 @@ namespace ShippingSystem.Migrations
                         .HasForeignKey("Order_Id");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ShippingSystem.Models.RefreshToken", b =>
+                {
+                    b.HasOne("ShippingSystem.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.RepresentativeGovernate", b =>
@@ -1004,7 +1041,7 @@ namespace ShippingSystem.Migrations
 
             modelBuilder.Entity("ShippingSystem.Models.Group", b =>
                 {
-                    b.Navigation("Privileges");
+                    b.Navigation("GroupPrivilege");
 
                     b.Navigation("UserGroups");
                 });
@@ -1016,7 +1053,7 @@ namespace ShippingSystem.Migrations
 
             modelBuilder.Entity("ShippingSystem.Models.Privilege", b =>
                 {
-                    b.Navigation("Privileges");
+                    b.Navigation("GroupPrivilege");
                 });
 
             modelBuilder.Entity("ShippingSystem.Models.Merchant", b =>

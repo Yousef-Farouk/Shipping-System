@@ -7,15 +7,14 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
 import { AuthRoutingModule } from './auth-routing.module';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './token.interceptor';
+import { TokenInterceptor } from '../../interceptors/token.interceptor';
 
 @NgModule({
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    //{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   declarations: [ LoginComponent, LogoutComponent, ForgetPasswordComponent, ResetPasswordComponent ],
   imports: [ CommonModule, ReactiveFormsModule, FormsModule, AuthRoutingModule,  ],
-  exports: [ LoginComponent, LogoutComponent, ForgetPasswordComponent ]
 })
 
 export class AuthModule { }

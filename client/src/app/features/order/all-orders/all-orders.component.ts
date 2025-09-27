@@ -1,8 +1,8 @@
 import { OrderService } from './../order.service';
-import { Order } from './../../../Models/Order';
-import { OrderStatus } from './../../../Models/Enums';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule ,FormBuilder,Validators} from '@angular/forms';
+import { OrderStatus } from '../../../modules/shared/Models/Enums';
+import { Order } from '../../../modules/shared/Models/Order';
 
 @Component({
   selector: 'app-all-orders',

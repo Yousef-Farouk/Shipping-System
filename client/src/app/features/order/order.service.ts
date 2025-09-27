@@ -1,11 +1,10 @@
-import { Order } from './../../Models/Order';
 import { Inject, Injectable } from '@angular/core';
-import { ApiService } from '../../shared/services/api.service';
 import { HttpClient,HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { ProductOrder } from '../../Models/ProductOrder';
-import { OrderStatus,OrderType,PaymentType } from '../../Models/Enums';
 import { Observable } from 'rxjs';
+import { ApiService } from '../../modules/shared/services/api.service';
+import { Order } from '../../modules/shared/Models/Order';
+import { OrderStatus } from '../../modules/shared/Models/Enums';
 
 
 @Injectable({

@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace ShippingSystem.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [EnableCors("AllowSpecificOrigin")]
     [Route("api/[controller]")]
@@ -228,6 +228,23 @@ namespace ShippingSystem.Controllers
                 //var roleId = await accountControllerService.GetRoleIdAsync(User) ;
                 var groupPrivielgesDTO = await accountControllerService.GetUserGroupPrivelegeAsync(User.FindFirstValue("userId"));
                 return Ok(groupPrivielgesDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
+        [HttpPost("refresh")]
+        //[Authorize]
+        public async Task<IActionResult> Refresh(RefreshTokenDto refreshTokenDto)
+        {
+            try
+            {
+                var result = await accountControllerService.Refresh(refreshTokenDto);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

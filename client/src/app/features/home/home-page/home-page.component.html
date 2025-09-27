@@ -1,9 +1,12 @@
-<div class="main-screen">
-    <div class="card" *ngFor="let card of cards">
-      <div class="content">
-        <div class="square">{{ card.number }}</div>
-        <div class="text">{{ card.text }}</div>
+<div class="container-fluid m-0 p-0">
+  <div class="row flex-nowrap w-100 m-0 p-0">
+    <div class="col p-0">
+      <div class="w-100">
+        <main>
+          <ng-content></ng-content>
+        </main>
       </div>
     </div>
-  </div>
-  
+    <app-sidebar class=" min-vh-100 col-auto px-0"></app-sidebar>
+    </div>
+</div>

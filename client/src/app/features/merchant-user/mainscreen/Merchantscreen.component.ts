@@ -1,8 +1,8 @@
-import { OrderStatus } from './../../../Models/Enums';
 import { Component } from '@angular/core';
 import { OrderService } from '../../order/order.service';
-import { Order } from '../../../Models/Order';
-import { AuthService } from '../../auth/auth.service';
+import { Order } from '../../../modules/shared/Models/Order';
+import { OrderStatus } from '../../../modules/shared/Models/Enums';
+import { AuthService } from '../../../modules/shared/services/auth.service';
 
 
 @Component({

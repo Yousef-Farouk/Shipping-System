@@ -1,18 +1,18 @@
 import { map } from 'rxjs';
-import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule ,FormBuilder,Validators, FormControl} from '@angular/forms';
-import { EmployeeService } from '../employee.service';
 import { response } from 'express';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Employee } from '../../../Models/Employee';
-import { PrivilegeService } from '../../admin/Services/privilege.service';
-import { BranchService } from '../../../services/branch.service';
+import { PrivilegeService } from '../../../modules/shared/services/privilege.service';
 import { PrivilegeDTO } from '../../admin/interfaces/privilege-dto';
-import { GroupService } from '../../admin/Services/group.service';
+import { GroupService } from '../../../modules/shared/services/group.service';
 import { Group } from '../../admin/interfaces/group';
 import { MatSelect } from "@angular/material/select";
-import { Branch } from '../../../Models/Branch';
+import { EmployeeService } from '../../../modules/shared/services/employee.service';
+import { Branch } from '../../../modules/shared/Models/Branch';
+import { AuthService } from '../../../modules/shared/services/auth.service';
+import { BranchService } from '../../branch/branch.service';
+import { Employee } from '../../../modules/shared/Models/Employee';
 
 @Component({
   selector: 'app-add-employee',

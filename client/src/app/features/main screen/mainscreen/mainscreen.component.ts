@@ -1,10 +1,10 @@
 
 import { Component } from '@angular/core';
-import { OrderStatus } from '../../../Models/Enums';
-import { Order } from '../../../Models/Order';
 import { OrderService } from '../../order/order.service';
-import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../modules/shared/services/auth.service';
+import { OrderStatus } from '../../../modules/shared/Models/Enums';
+import { Order } from '../../../modules/shared/Models/Order';
 
 
 @Component({
@@ -48,11 +48,11 @@ export class MainScreenComponent {
     //   }}
     // ) 
 
-    this.orderService.getAll().subscribe({
-      next:(data:any)=>{
-        this.orders = data 
-      }
-    })
+    // this.orderService.getAll().subscribe({
+    //   next:(data:any)=>{
+    //     this.orders = data 
+    //   }
+    // })
   }
 
 

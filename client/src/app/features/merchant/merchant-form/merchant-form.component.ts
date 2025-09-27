@@ -4,9 +4,9 @@ import { MerchantService } from '../merchant.service';
 import { MerchantDTO, SpecialPriceDTO,Merchant } from '../merchant.model';
 import { emailValidator, passwordValidator, noSpacesValidator } from './custom-validators'; 
 import { EventEmitter, Output } from '@angular/core';
-import { GovernateServiceService } from '../../governate/governate-service.service'
+import { GovernateServiceService } from '../../../modules/shared/services/governate-service.service'
 import Swal from 'sweetalert2';
-import {CityService } from '../../city/city.service'
+import {CityService } from '../../../modules/shared/services/city.service'
 import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-merchant-form',

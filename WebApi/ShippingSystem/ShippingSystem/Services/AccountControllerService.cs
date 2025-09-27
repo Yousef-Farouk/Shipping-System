@@ -9,6 +9,8 @@ using Server.DTOs.Passwords;
 using ShippingSystem.DTOs.Authentication;
 using ShippingSystem.DTOs.Groups;
 using ShippingSystem.DTOs.Passwords;
+using ShippingSystem.DTOs.Privileges;
+using ShippingSystem.Migrations;
 using ShippingSystem.Models;
 using ShippingSystem.Repositories;
 using ShippingSystem.UnitOfWorks;
@@ -16,6 +18,7 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
@@ -27,13 +30,15 @@ namespace ShippingSystem.Services
         private IConfiguration configuration;
         private UserManager<ApplicationUser> userManager;
         private readonly IUnitOfWork unitOfWork;
+        private readonly ShippingContext context;
 
-        public AccountControllerService(IMapper mapper, UserManager<ApplicationUser> userManager, IConfiguration configuration, IUnitOfWork unitOfWork)
+        public AccountControllerService(IMapper mapper, UserManager<ApplicationUser> userManager, IConfiguration configuration, IUnitOfWork unitOfWork,ShippingContext _context)
         {
             this.mapper = mapper;
             this.userManager = userManager;
             this.configuration = configuration;
             this.unitOfWork = unitOfWork;
+            context = _context;
         }
 
         private async Task<string> GetUserRole(ApplicationUser applicationUser) 
@@ -42,37 +47,31 @@ namespace ShippingSystem.Services
 
             return role;
         }
-        private async Task<string>  GenerateToken(ApplicationUser applicationUser, bool? rememberMe)
+        private async Task<string>  GenerateToken(ApplicationUser? applicationUser = null, ClaimsPrincipal? principal = null)
         {
-           // var userGoups = await unitOfWork.UserGroupsRepository.GetUserGroupsAsync(applicationUser.Id);
+            // var userGoups = await unitOfWork.UserGroupsRepository.GetUserGroupsAsync(applicationUser.Id);
 
-            var groupPriveleges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByUserId(applicationUser.Id);
+            IEnumerable<Claim> claims = new List<Claim>();
 
-            var Dto = mapper.Map<List<GroupPrivilegeDTO?>>(groupPriveleges);
-
-
-            var privielegeJson = JsonSerializer.Serialize(Dto);
-            List<Claim> claims = new List<Claim>
+            if (applicationUser != null)
             {
-                new Claim("userId", applicationUser.Id ?? ""),
-                new Claim("groupPrivelege",privielegeJson)
-                //new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email ?? ""),
-                //new Claim(JwtRegisteredClaimNames.Name, applicationUser.FullName ?? ""),
-                //new Claim(JwtRegisteredClaimNames.Iss, configuration.GetSection("JwtSettings").GetSection("ValidIssuer").Value ?? ""),
-                //new Claim(JwtRegisteredClaimNames.Aud, configuration.GetSection("JwtSettings").GetSection("ValidAudience").Value ?? ""),
-                //new Claim("phoneNumber", applicationUser.PhoneNumber ?? ""),
-                //new Claim("phoneNumberConfirmed", applicationUser.PhoneNumberConfirmed.ToString() ?? ""),
-                //new Claim("twoFactorEnabled", applicationUser.TwoFactorEnabled.ToString() ?? ""),
-                //new Claim("grouoId", )
-            };
+                var groupPriveleges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByUserId(applicationUser.Id);
+                var groupPrivelegeDto = mapper.Map<List<GroupPrivilegeDTO?>>(groupPriveleges);
+                var privielegeString = JsonSerializer.Serialize(groupPrivelegeDto);
 
-            //var roles = await userManager.GetRolesAsync(applicationUser);
-            //foreach (var role in roles)
-            //{
-            //    claims.Add(new Claim(ClaimTypes.Role, role));
-            //}
+                claims = new List<Claim>
+                {
+                    new Claim("userId", applicationUser.Id ?? ""),
+                    new Claim("groupPrivelege",privielegeString),
+                };
 
-            DateTime expiration = rememberMe == true ? DateTime.UtcNow.AddDays(7) : DateTime.UtcNow.AddDays(1);
+            }
+            else if(principal != null)
+            {
+                claims = principal.Claims;
+            }
+
+            DateTime expiration =  DateTime.UtcNow.AddMinutes(1);
 
             var key = Encoding.ASCII.GetBytes(configuration.GetSection("JwtSettings").GetSection("securityKey").Value!);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -87,6 +86,43 @@ namespace ShippingSystem.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
             return token ;
+        }
+
+        private RefreshToken GenerateRefreshToken(string userId)
+        {
+            var randomNumber = new byte[64];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomNumber),
+                Expires = DateTime.UtcNow.AddMinutes(3),
+                UserId = userId,
+            };
+        }
+
+        // Helper method inside your controller or a service
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var key = Encoding.ASCII.GetBytes(configuration.GetSection("JwtSettings").GetSection("securityKey").Value!);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false, // You might want to validate the audience
+                ValidateIssuer = false, // You might want to validate the issuer
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateLifetime = false // Here we are telling not to validate the lifetime
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha512, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
         }
 
         public async Task<AuthResponseDTO> Login(LoginDTO loginDTO)
@@ -112,12 +148,21 @@ namespace ShippingSystem.Services
                 };
             }
 
-            string token = await GenerateToken(user, loginDTO.RememberMe);
+            string token = await GenerateToken(user);
+
+            var refreshToken =  GenerateRefreshToken(user.UserName);
+            user.RefreshToken.Token = refreshToken.Token;
+            user.RefreshToken.Expires = refreshToken.Expires;
+
+            await userManager.UpdateAsync(user);
+
             string role = await GetUserRole(user);
+
             return new AuthResponseDTO
             {
                 isSuccess = true,
                 Token = token,
+                RefreshToken = refreshToken.Token,
                 Message = "Login successful",
                 Role = role
             };
@@ -316,13 +361,55 @@ namespace ShippingSystem.Services
             var userGoups = await unitOfWork.UserGroupsRepository.GetUserGroupsAsync(userId);
 
             var groupPriveleges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByGroupId(userGoups);
-
-            //if (group == null)
-            //{
-            //    return new List<GroupPrivilegeDTO?>();
-            //}
-            //var groupPrivileges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByGroupId(group.Id);
             return mapper.Map<List<GroupPrivilegeDTO?>>(groupPriveleges);
         }
+
+
+
+        public async Task<RefreshTokenDto> Refresh(RefreshTokenDto refreshTokenDto)
+        {
+            try
+            {
+                var principal = GetPrincipalFromExpiredToken(refreshTokenDto.accessToken);
+                var userId = principal.Claims.First(c => c.Type == "userId").Value;
+
+                // 2. Use the userId to find the user in the database.
+                var user = await userManager.FindByIdAsync(userId);
+
+                // 3. Check if the user's stored refresh token matches the one sent by the client.
+                if (user == null || user.RefreshToken.Token != refreshTokenDto.refreshToken || !user.RefreshToken.IsActive)
+                {
+                    throw new Exception("Invalid client request") ;
+                }
+
+                // 4. If everything is valid, generate new tokens.
+                var newAccessToken = await GenerateToken(principal:principal);
+                var newRefreshToken =  GenerateRefreshToken(userId);
+
+
+                //user.RefreshToken = newRefreshToken;
+
+                user.RefreshToken.Token = newRefreshToken.Token;
+                user.RefreshToken.Expires = newRefreshToken.Expires;
+
+                await userManager.UpdateAsync(user);
+
+               //context.Update(newRefreshToken);
+
+               // await context.SaveChangesAsync();
+
+                return new RefreshTokenDto()
+                {
+                    refreshToken = newRefreshToken.Token,
+                    accessToken = newAccessToken,
+                };
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
     }
+
 }

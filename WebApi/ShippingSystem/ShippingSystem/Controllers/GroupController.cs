@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,8 @@ using ShippingSystem.Models;
 using ShippingSystem.Repositories;
 using ShippingSystem.Services;
 using ShippingSystem.UnitOfWorks;
+using ShippingSystem.Filters;
+using ShippingSystem.Enumerations;
 
 namespace ShippingSystem.Controllers
 {
@@ -28,6 +31,8 @@ namespace ShippingSystem.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
+        [GroupAuthorzationFilter(PrivilegeEnum.Employee,Actions.View)]
         public async Task<IActionResult> GetAllGroupsAsync(int pageNumber, int pageSize)
         {
             try
@@ -120,6 +125,8 @@ namespace ShippingSystem.Controllers
         /// <param name="groupDTO"></param>
         /// <returns></returns>
         [HttpPost("AddNewGroup")]
+        [Authorize]
+       // [GroupAuthorzationFilter(4)]
         public async Task<IActionResult> AddNewGroup(GroupDTO groupDTO)
         {
             try

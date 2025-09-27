@@ -1,10 +1,10 @@
-import { AuthService } from './../../auth/auth.service';
 import { error } from 'console';
-import { EmployeeService } from '../employee.service';
 import { Component, OnInit } from '@angular/core';
-import { Employee } from '../../../Models/Employee';
 import { Router } from '@angular/router';
 import { response } from 'express';
+import { EmployeeService } from '../../../modules/shared/services/employee.service';
+import { AuthService } from '../../../modules/shared/services/auth.service';
+import { Employee } from '../../../modules/shared/Models/Employee';
 
 @Component({
   selector: 'app-employee-list',

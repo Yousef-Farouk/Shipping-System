@@ -1,20 +1,20 @@
-import { OrderStatus, PaymentType ,OrderType} from './../../../Models/Enums';
-import { ShippingTypeService } from './../../../services/shippingtype.service';
-import { CityService } from './../../city/city.service';
+import { CityService } from '../../../modules/shared/services/city.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
 import { OrderService } from '../../order/order.service';
 import { ActivatedRoute, Router} from '@angular/router';
 import { NgModule } from '@angular/core';
-import { Order } from '../../../Models/Order';
-import { GovernateServiceService } from '../../governate/governate-service.service';
-import { City } from '../../../Models/City';
-import { Governate } from '../../../Models/Governate';
-import { BranchService } from '../../../services/branch.service';
+import { GovernateServiceService } from '../../../modules/shared/services/governate-service.service';
 import { MerchantService } from '../../merchant/merchant.service';
-import { AuthService } from '../../auth/auth.service';
 import { Observable } from 'rxjs';
-import { ProductOrder } from '../../../Models/ProductOrder';
+import { ProductOrder } from '../../../modules/shared/Models/ProductOrder';
+import { OrderStatus, OrderType, PaymentType } from '../../../modules/shared/Models/Enums';
+import { City } from '../../../modules/shared/Models/City';
+import { Governate } from '../../../modules/shared/Models/Governate';
+import { ShippingTypeService } from '../../../modules/shared/services/shippingtype.service';
+import { BranchService } from '../../branch/branch.service';
+import { AuthService } from '../../../modules/shared/services/auth.service';
+import { Order } from '../../../modules/shared/Models/Order';
 
 @Component({
   selector: 'app-order-form',

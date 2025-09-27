@@ -1,9 +1,9 @@
-import { Order } from './../../../Models/Order';
-import { OrderStatus } from './../../../Models/Enums';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule ,FormBuilder,Validators} from '@angular/forms';
 import { OrderService } from '../../order/order.service';
 import {ActivatedRoute} from '@angular/router'
+import { Order } from '../../../modules/shared/Models/Order';
+import { OrderStatus } from '../../../modules/shared/Models/Enums';
 
 
 @Component({

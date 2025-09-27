@@ -1,0 +1,226 @@
+<!-- <div class="sidebar">
+  <div class="sidebar-header">
+    <img src="../../../assets/logo.logo.png" alt="Logo" class="sidebar-logo" width="120">
+  </div>
+
+  <ul class="nav flex-column me-5  align-items-end">
+    <li class="nav-item">
+      <a class="nav-link" routerLink='main-screen'>
+        الرئيسية <i class="fas fa-home"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/admin/addGroup">
+        الصلاحيات <i class="fas fa-shield-alt"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button">
+        المستخدمين <i class="fas fa-users"></i>
+      </a>
+      <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" routerLink="/employee/all"> الموظفين</a></li>
+        <li><a class="dropdown-item" routerLink="/merchants">التجار </a></li>
+        <li><a class="dropdown-item" routerLink="/representative"> المناديب </a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button">
+        المناطق <i class="fas fa-map-marked-alt"></i>
+      </a>
+      <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" routerLink="/governate"> المحافظات</a></li>
+        <li><a class="dropdown-item" routerLink="/city">المدن </a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/branch">
+        الفروع <i class="fas fa-code-branch"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button">
+        الاعدادات <i class="fas fa-cog"></i>
+      </a>
+      <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" routerLink="weight"> اعدادات الوزن</a></li>
+        <li><a class="dropdown-item" routerLink="village-cost"> التوصيل لقريه </a></li>
+        <li><a class="dropdown-item" routerLink="shippingtype"> انواع الشحن </a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button">
+        عرض الطلبات <i class="fas fa-shopping-cart"></i>
+      </a>
+      <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" routerLink="/order/add"> جديد </a></li>
+        <li><a class="dropdown-item" routerLink="/village-cost"> قيد الانتظار </a></li>
+        <li><a class="dropdown-item" routerLink="/shippingtype"> تم التسليم للمندوب </a></li>
+        <li><a class="dropdown-item" routerLink="/shippingtype"> لا يمكن الوصول </a></li>
+        <li><a class="dropdown-item" routerLink="/shippingtype"> تم التأجيل </a></li>
+        <li><a class="dropdown-item" routerLink="/shippingtype"> تم التسليم جزئيا </a></li>
+        <li><a class="dropdown-item" routerLink="/shippingtype"> الالغاء من قبل المستلم </a></li>
+        <li><a class="dropdown-item" routerLink="/shippingtype"> الرفض مع الدفع </a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/order/reports">
+        تقارير الطلبات <i class="fas fa-file-alt"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/order/add">
+        طلب جديد <i class="fas fa-plus-circle"></i>
+      </a>
+    </li>
+  </ul>
+</div> -->
+
+
+
+
+
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <img src="../../../assets/logo.logo.png" alt="Logo" class="sidebar-logo" width="120">
+  </div>
+
+  <ul *ngIf="role == Roles.employee"  class="nav flex-column me-5  align-items-end">
+    <li class="nav-item">
+      <a class="nav-link" routerLink='/employee'>
+        الرئيسية <i class="fas fa-home"></i>
+      </a>
+    </li>
+    <li class="nav-item" >
+      <a class="nav-link" routerLink="employee/groups">
+        الصلاحيات <i class="fas fa-shield-alt"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button">
+        المستخدمين <i class="fas fa-users"></i>
+      </a>
+      <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li ><a class="dropdown-item" routerLink="/employee/all"> الموظفين</a>
+        </li>
+        <li ><a class="dropdown-item" routerLink="/employee/merchant/all">التجار </a></li>
+        <li ><a class="dropdown-item" routerLink="/employee/representative/all">
+            المناديب </a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button">
+        المناطق <i class="fas fa-map-marked-alt"></i>
+      </a>
+      <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li ><a class="dropdown-item" routerLink="/employee/location/governate"> المحافظات</a>
+        </li>
+        <li ><a class="dropdown-item" routerLink="/employee/location/city">المدن </a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item" >
+      <a class="nav-link" routerLink="/employee/branch">
+        الفروع <i class="fas fa-code-branch"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button">
+        الاعدادات <i class="fas fa-cog"></i>
+      </a>
+      <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li ><a class="dropdown-item" routerLink="employee/settings/weight"> اعدادات الوزن</a></li>
+        <li *ngIf="hasPrivilege(premission.Settings,Actions.View)"><a class="dropdown-item" routerLink="employee/settings/village"> التوصيل
+            لقريه </a></li>
+        <li ><a class="dropdown-item" routerLink="employee/settings/shipping"> انواع الشحن
+          </a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link toggle" id="navbarDropdown" role="button" routerLink="/order/all">
+        عرض الطلبات <i class="fas fa-shopping-cart"></i>
+      </a>
+      <!-- <ul class="sublist user-sublist" aria-labelledby="navbarDropdown">
+        <li *ngIf="hasPrivilege('OrderAdd', 'view')"><a class="dropdown-item" routerLink="/order/add"> جديد </a></li>
+        <li *ngIf="hasPrivilege('VillageCost', 'view')"><a class="dropdown-item" routerLink="/village-cost"> قيد
+            الانتظار </a></li>
+        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="/shippingtype"> تم التسليم
+            للمندوب </a></li>
+        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="/shippingtype"> لا يمكن
+            الوصول </a></li>
+        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="/shippingtype"> تم التأجيل
+          </a></li>
+        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="/shippingtype"> تم التسليم
+            جزئيا </a></li>
+        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="/shippingtype"> الالغاء من
+            قبل المستلم </a></li>
+        <li *ngIf="hasPrivilege('ShippingType', 'view')"><a class="dropdown-item" routerLink="/shippingtype"> الرفض مع
+            الدفع </a></li>
+      </ul> -->
+    </li>
+
+    <li class="nav-item" >
+      <a class="nav-link" routerLink="/order/reports">
+        تقارير الطلبات <i class="fas fa-file-alt"></i>
+      </a>
+    </li>
+
+    <!-- <li class="nav-item" *ngIf="hasPrivilege('OrderAdd', 'add')">
+      <a class="nav-link" routerLink="/order/all">
+        طلب جديد <i class="fas fa-plus-circle"></i>
+      </a>
+    </li> -->
+  </ul>
+
+
+  <ul *ngIf="role=='merchant'"  class="nav flex-column me-5 align-items-end">
+    <li class="nav-item">
+      <a class="nav-link" routerLink='/merchant'>
+        الرئيسية <i class="fas fa-home"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " id="navbarDropdown" role="button" routerLink='merchant/order/all'>
+        عرض الطلبات <i class="fas fa-shopping-cart"></i>
+      </a>
+    </li>
+    <li class="nav-item" >
+      <a class="nav-link" routerLink="merchant/order/add">
+        طلب جديد <i class="fas fa-plus-circle"></i>
+      </a>
+    </li>
+  </ul>
+
+  <ul *ngIf="role=='representative'"  class="nav flex-column me-5 align-items-end">
+    <li class="nav-item">
+      <a class="nav-link" routerLink='/representative'>
+        الرئيسية <i class="fas fa-home"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link " id="navbarDropdown" role="button" routerLink='representative/order/all'>
+        عرض الطلبات <i class="fas fa-shopping-cart"></i>
+      </a>
+    </li>
+  </ul>
+
+  <ul  class="nav flex-column me-5 align-items-end" >
+    <li class="nav-item" >
+        <a class="nav-link" (click)="logout()" >
+          تسجيل خروج <i class="fas fa-sign-out-alt"  ></i>
+        </a>
+    </li>
+  </ul>
+    
+
+</div>

@@ -1,10 +1,9 @@
-import { Employee } from './../Models/Employee';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../features/auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Roles } from '../Enums/rolesEnum';
+import { AuthService } from '../modules/shared/services/auth.service';
+import { Roles } from '../modules/shared/Enums/rolesEnum';
 
 
 @Injectable({
@@ -26,7 +25,7 @@ export class EmployeeGuard implements CanActivate {
         console.log('employee login succeeded')
         return true;
       }
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
       return false;
   }
 }

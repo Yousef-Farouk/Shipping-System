@@ -8,7 +8,7 @@ import { MerchantsRoutingModule } from './merchants-routing.module';
 import { MerchantModalComponent } from './merchant-modal/merchant-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MerchantFormComponent } from './merchant-form/merchant-form.component';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../modules/shared/shared.module';
 @NgModule({
   declarations: [
     MerchantListComponent,

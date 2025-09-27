@@ -13,6 +13,6 @@ namespace ShippingSystem.Models
 
         public virtual IList<UserGroups> UserGroups { get; set; } = new List<UserGroups>();
 
-
+        public virtual RefreshToken RefreshToken { get; set; }
     }
 }
