@@ -175,7 +175,9 @@ namespace ShippingSystem
                     ValidateIssuerSigningKey = true,
                     ValidAudience = JwtSettings["ValidAudience"],
                     ValidIssuer = JwtSettings["ValidIssuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.GetSection("securityKey").Value!))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.GetSection("securityKey").Value!)),
+                    ClockSkew = TimeSpan.Zero
+
                 };
             });
             #endregion

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginDTO } from '../interfaces/login-dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../modules/shared/services/auth.service';
+import { ResponseDTO } from '../interfaces/response-dto';
 
 @Component({
   selector: 'app-login',
@@ -59,7 +60,7 @@ export class LoginComponent implements OnInit {
         rememberMe: this.rememberMe?.value
       };
       this.authService.login(loginCredentials).subscribe({
-        next: (response) => {
+        next: (response : ResponseDTO) => {
           this.snackBar.open('تم تسجيل الدخول بنجاح', 'اغلاق', {
             duration: 3000,
             horizontalPosition: 'center',

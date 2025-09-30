@@ -151,8 +151,20 @@ namespace ShippingSystem.Services
             string token = await GenerateToken(user);
 
             var refreshToken =  GenerateRefreshToken(user.UserName);
-            user.RefreshToken.Token = refreshToken.Token;
-            user.RefreshToken.Expires = refreshToken.Expires;
+            //user.RefreshToken?.Token = refreshToken.Token;
+            //user.RefreshToken?.Expires = refreshToken.Expires;
+
+            //user.RefreshToken = refreshToken;
+
+            if (user.RefreshToken is null )
+            {
+                user.RefreshToken = refreshToken;
+            }
+            else
+            {
+                user.RefreshToken.Token = refreshToken.Token;
+                user.RefreshToken.Expires = refreshToken.Expires;
+            }
 
             await userManager.UpdateAsync(user);
 

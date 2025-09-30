@@ -15,6 +15,7 @@ import { ForgetPasswordDTO } from '../../../features/auth/interfaces/forget-pass
 import { ResetPasswordDTO } from '../../../features/auth/interfaces/reset-password-dto';
 import { UserDetailsDTO } from '../../../features/auth/interfaces/user-details-dto';
 import { PrivilegeDTO } from '../../../features/admin/interfaces/privilege-dto';
+import { RefreshToken } from '../Models/RefreshToken';
 
 
 @Injectable({
@@ -25,6 +26,7 @@ export class AuthService {
   private roleKey = 'role';
   private privilegesKey = 'privileges';
   private userIdKey = 'userId';
+  private refreshTokenKey = 'refreshToken'
   private  grouPrivileges : GroupPrivilegeDTO[] = []
   private premissions : PrivilegeDTO[] = []
   private apiURL = environment.apiUrl;
@@ -68,16 +70,27 @@ export class AuthService {
     );
   }
   
+  refresh(refreshDto:RefreshToken): Observable<RefreshToken>
+  {
+    return this.http.post<RefreshToken>(`${this.apiURL}Account/refresh`,refreshDto,this.httpOptions).pipe(
+      catchError((error:HttpErrorResponse)=>{
+        return throwError(()=>error.error.message)
+      })
+    )
 
-  handleLogin(res:any)
+  }
+
+  handleLogin(res:ResponseDTO)
   {
     const token :string = res.token
     const tokenData : any = jwtDecode(token)
     const role = res.role ;
     const userId = tokenData['userId']
+    const refreshToken = res.refreshToken 
     this.cookieService.set(this.tokenKey,token,undefined,undefined,undefined,true,'Strict')
     this.cookieService.set(this.roleKey,role,undefined,undefined,undefined,true,'Strict')
     this.cookieService.set(this.userIdKey,userId,undefined,undefined,undefined,true,'Strict')
+    this.cookieService.set(this.refreshTokenKey,refreshToken,undefined,undefined,undefined,true,'Strict')
     this.router.navigate(['']);
     
     // if (role === Roles.employee ){
@@ -125,7 +138,22 @@ export class AuthService {
 
   getToken(): string {
     //return localStorage.getItem(this.tokenKey);
-    return this.cookieService.get('token')
+    return this.cookieService.get(this.tokenKey)
+  }
+
+  getRerfreshToken(): string {
+    //return localStorage.getItem(this.tokenKey);
+    return this.cookieService.get(this.refreshTokenKey)
+  }
+
+  setToken(token:string) {
+    //return localStorage.getItem(this.tokenKey);
+    this.cookieService.set(this.tokenKey,token,undefined,undefined,undefined,true,'Strict')
+  }
+
+  setRerfreshToken(refreshtoken : string) {
+    //return localStorage.getItem(this.tokenKey);
+    this.cookieService.set(this.refreshTokenKey,refreshtoken,undefined,undefined,undefined,true,'Strict')
   }
 
   getRole(): string  {

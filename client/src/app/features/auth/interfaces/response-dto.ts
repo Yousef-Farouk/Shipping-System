@@ -3,4 +3,5 @@ export interface ResponseDTO {
     message: string;
     token: string;
     role: string;
+    refreshToken:string
 }
