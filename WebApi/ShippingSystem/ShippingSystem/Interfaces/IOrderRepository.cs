@@ -1,4 +1,5 @@
-﻿using ShippingSystem.Enumerations;
+﻿using ShippingSystem.DTOs.Order;
+using ShippingSystem.Enumerations;
 using ShippingSystem.Models;
 
 namespace ShippingSystem.Repositories
@@ -13,11 +14,13 @@ namespace ShippingSystem.Repositories
 
         Task<IEnumerable<Order>> GetRepresentativeOrdersAsync(string id);
 
-        Task<IEnumerable<Order>> FilterByStatus(OrderStatus status);
+        Task<IEnumerable<Order>> FilterByStatus(OrderStatusEnum status);
 
-        Task<IEnumerable<Order>> FilterByStatusAndDate(OrderStatus status, DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Order>> FilterByStatusAndDate(OrderStatusEnum status, DateTime startDate, DateTime endDate);
 
         Task<Order> CalculateTotalCost(Order order);
 
+        Task<IList<OrderCountDto>> GetEmployeeCountOrders(string roleId);
+        Task<IEnumerable<OrderCountDto>> GetRepresentativeCountOrders(string roleId,string representativeId);
     }
 }

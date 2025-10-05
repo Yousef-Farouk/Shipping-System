@@ -87,7 +87,7 @@
                     <td>{{order.totalCost}}</td>
                     <td><a style="color: #f37735;font-size: larger;" [routerLink]="['/order','edit',order.id]"><i class="fa-regular fa-pen-to-square"></i></a></td>
                     <td><a style="font-size:10px;font-weight: bold;" class="btn btn-primary" (click)="openModal(order.id)">الحاله</a></td>
-                    <td><a style="font-size:10px;font-weight: bold;" class ="btn btn-primary">اسناد</a> </td>
+                    <td><a style="font-size:10px;font-weight: bold;" class ="btn btn-primary"(click)="openAssignModal(order.id)">اسناد</a> </td>
                     <td><a style="color: #d90429;font-size: larger;" (click)="deleteOrder(order.id)"><i class="fa-solid fa-trash-can"></i></a></td>
                     <td><a style="color: #00b4d8;font-size: larger;"><i class="fa-solid fa-print"></i></a></td>
                   </tr>
@@ -121,29 +121,49 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header justify-content-end align-items-center">
-            <h3 class="text-end text-center mb-0 fs-4" dir="rtl" >{{"تغير الحالة"}}</h3>
+            <!-- <h3 class="text-end text-center mb-0 fs-4" dir="rtl" >{{"تغير الحالة"}}</h3> -->
             <button type="button " class="btn-close ms-0" data-bs-dismiss="modal" aria-label="Close" (click) = "closeModal()"></button>
           </div>
-
-          <form (submit)="changeStatus()" [formGroup]="statusForm">
+          <ng-container *ngIf="statusModal">
+             <form (submit)="changeStatus()" [formGroup]="statusForm">
             <div class="modal-body d-flex align-items-center" dir="rtl">
               <div class="input-group mb-3">
                 <select class="form-select w-100" (change)="showStatus($event)" formControlName ="status">
+                    <option [value]="''" disabled selected>اختر الصلاحية</option>
                     <option  value='RejectedFromEmployee' >رفض</option>
                     <option  value='Pending' >قيد الانتظار</option>
                 </select>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click) = "closeModal()">اغلاق</button>
-            <button type="submit" class="btn btn-primary"  >تغيير</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click) = "closeModal()">اغلاق</button>
+              <button type="submit" class="btn btn-primary"  >تغيير</button>
+            </div>
           </form>
+          </ng-container>
+
+          <ng-container *ngIf="assignModal">
+            <form (submit)="changeStatus()" [formGroup]="statusForm">
+              <div class="modal-body d-flex align-items-center" dir="rtl">
+                <div class="input-group mb-3">
+                  <select  class="form-select w-100" (change)="showStatus($event)" formControlName ="status">
+                      <option [value]="''" disabled selected>اختر المندوب</option>
+                      <option *ngFor="let representative of representativesList" [value]="representative.id">{{representative.fullName}}</option>
+                  </select>
+              </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click) = "closeModal()">اغلاق</button>
+                <button type="submit" class="btn btn-primary">اسناد</button>
+              </div>
+            </form>
+          </ng-container>
+         
         </div>
       </div>
     </div>
     
-    <div class="modal"  [ngClass]="{'d-block' :modalOpen}" tab-index="-1">
+    <!-- <div class="modal"  [ngClass]="{'d-block' :modalOpen}" tab-index="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header justify-content-end align-items-center">
@@ -167,6 +187,6 @@
           </form>
         </div>
       </div>
-    </div>      
+    </div>       -->
   </div>
   

@@ -1,18 +1,20 @@
 
 import { Component } from '@angular/core';
-import { OrderService } from '../../order/order.service';
+import { OrderService } from '../../../modules/shared/services/order.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../modules/shared/services/auth.service';
 import { OrderStatus } from '../../../modules/shared/Models/Enums';
 import { Order } from '../../../modules/shared/Models/Order';
+import { Observable } from 'rxjs';
+import { OrderCountDto } from '../../../modules/shared/Models/OrderCountDto';
 
 
 @Component({
-  selector: 'app-mainscreen',
-  templateUrl: './mainscreen.component.html',
-  styleUrls: ['./mainscreen.component.css']
+  selector: 'app-employee-mainscreen',
+  templateUrl: './employee-mainscreen.component.html',
+  styleUrls: ['./employee-mainscreen.component.css']
 })
-export class MainScreenComponent {
+export class EmployeeMainScreenComponent {
   orderStatus =  OrderStatus
 
   orderStatusKeys = Object.keys(OrderStatus).filter(key => isNaN(Number(key)));
@@ -21,38 +23,26 @@ export class MainScreenComponent {
 
   represent_id = ''
 
+  employeeOrders$ : Observable<OrderCountDto[]> = new Observable()
+
   constructor(private orderService:OrderService,private authService : AuthService,private router:Router) { }
 
   ngOnInit(): void {
 
-    this.getData()
+    this.employeeOrders$ = this.getEmployeeData()
+    console.log(this.employeeOrders$)
   }
 
   getEnumKeys<T extends object>(enumType: T): (keyof T)[] {
     return Object.keys(enumType).filter(key => isNaN(Number(key as any))) as (keyof T)[];
   }
 
-  getData()
+  getEmployeeData() : Observable<OrderCountDto[]>
   {
-    //  this.authService.getUserDetails().subscribe({
-    //   next:(data:any)=>{
-    //       this.represent_id = data.id
-    //       console.log(this.represent_id)
-    //       this.orderService.getRepresentativeOrders(this.represent_id).subscribe({
-    //         next:(data:Order[])=>{
-    //           this.orders = data
-    //           console.log(data)
-    //         }
-      
-    //       })
-    //   }}
-    // ) 
 
-    // this.orderService.getAll().subscribe({
-    //   next:(data:any)=>{
-    //     this.orders = data 
-    //   }
-    // })
+    const roleId = this.authService.getRoleId();
+    
+    return this.orderService.getEmployeeOrderCount(roleId)
   }
 
 

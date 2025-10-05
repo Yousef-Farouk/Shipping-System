@@ -3,7 +3,7 @@ import { OrderStatus } from '../../shared/Models/Enums';
 import { Order } from '../../shared/Models/Order';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { OrderService } from '../../../features/order/order.service';
+import { OrderService } from '../../shared/services/order.service';
 
 @Component({
   selector: 'app-mainscreen',

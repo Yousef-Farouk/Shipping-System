@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { OrderService } from '../../order/order.service';
+import { OrderService } from '../../../modules/shared/services/order.service';
 import { Order } from '../../../modules/shared/Models/Order';
 import { OrderStatus } from '../../../modules/shared/Models/Enums';
 import { AuthService } from '../../../modules/shared/services/auth.service';

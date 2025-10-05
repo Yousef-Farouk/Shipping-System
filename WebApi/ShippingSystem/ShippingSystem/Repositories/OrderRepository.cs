@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using ShippingSystem.DTOs.Order;
 using ShippingSystem.Enumerations;
+using ShippingSystem.Migrations;
 using ShippingSystem.Models;
 
 namespace ShippingSystem.Repositories
@@ -92,14 +94,49 @@ namespace ShippingSystem.Repositories
         }
 
 
-        public async Task<IEnumerable<Order>> FilterByStatusAndDate(OrderStatus status ,DateTime startDate ,DateTime endDate)
+        public async Task<IEnumerable<Order>> FilterByStatusAndDate(OrderStatusEnum status ,DateTime startDate ,DateTime endDate)
         {
-            return await db.Orders.Where(o=> o.OrderStatus == status && o.OrderDate >= startDate && o.OrderDate <= endDate).ToListAsync();
+            return await db.Orders.Where(o=>  o.OrderDate >= startDate && o.OrderDate <= endDate).ToListAsync();
         }
 
-        public async Task<IEnumerable<Order>> FilterByStatus(OrderStatus status)
+        public async Task<IEnumerable<Order>> FilterByStatus(OrderStatusEnum status)
         {
-            return await db.Orders.Where(o => o.OrderStatus == status).ToListAsync();
+            return await db.Orders.ToListAsync();
+        }
+
+        public async Task<IList<OrderCountDto>> GetEmployeeCountOrders(string roleId)
+        {
+            return await db.OrderStatusRoleDescriptions
+                .Where(osd => osd.RoleId == roleId) // 1. First, filter the statuses you care about.
+                .GroupJoin(                         // 2. Perform a LEFT JOIN to the Orders table.
+                    db.Orders,
+                    statusDescription => statusDescription.StatusId, // Key from the left table (OrderStatusRoleDescriptions)
+                    order => order.StatusId,                         // Key from the right table (Orders)
+                    (statusDescription, ordersGroup) => new OrderCountDto // 3. Project the results.
+                    {
+                        StatusDescription = statusDescription.Description,
+                        Count = ordersGroup.Count() // 4. Count the items IN THE GROUP for the correct count.
+                    }
+                ).ToListAsync();
+
+
+        }
+
+        public async Task<IEnumerable<OrderCountDto>> GetRepresentativeCountOrders(string roleId,string representativeId)
+        {
+            return await db.OrderStatusRoleDescriptions
+               .Where(osd => osd.RoleId == roleId ) // 1. First, filter the statuses you care about.
+               .GroupJoin(                         // 2. Perform a LEFT JOIN to the Orders table.
+                   db.Orders.Where(o=>o.Representative_Id == representativeId),
+                   statusDescription => statusDescription.StatusId, // Key from the left table (OrderStatusRoleDescriptions)
+                   order => order.StatusId,                         // Key from the right table (Orders)
+                   (statusDescription, ordersGroup) => new OrderCountDto // 3. Project the results.
+                   {
+                       StatusDescription = statusDescription.Description,
+                       Count = ordersGroup.Count() // 4. Count the items IN THE GROUP for the correct count.
+                   }
+               ).ToListAsync();
+
         }
     }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router } from '@angular/router';
 import { AuthService } from '../../../modules/shared/services/auth.service';
 import { PrivilegeService } from '../../../modules/shared/services/privilege.service';
+import { Roles } from '../../../modules/shared/Enums/rolesEnum';
 
 @Component({
   selector: 'app-dashbaord',
@@ -20,16 +21,17 @@ export class DashbaordComponent implements OnInit{
 
     const role = this.authService.getRole();
 
-    if(role == 'employee')
+    if(role == Roles.employee)
     {
       this.route.navigate(['/employee'])
       this.authService.loadGroupPrivilege();
     }
-    else if (role == 'representative')
+  
+    else if (role == Roles.representative)
     {
         this.route.navigate(['/representative'])
     }
-    else if(role == 'merchant')
+    else if(role == Roles.merchant)
     {
         this.route.navigate(['/merchant'])
     }

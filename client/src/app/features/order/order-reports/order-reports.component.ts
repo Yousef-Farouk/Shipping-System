@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderService } from '../order.service';
+import { OrderService } from '../../../modules/shared/services/order.service';
 import { PageEvent } from '@angular/material/paginator';
 import { OrderStatus } from '../../../modules/shared/Models/Enums';
 import { Order } from '../../../modules/shared/Models/Order';

@@ -59,7 +59,7 @@ namespace ShippingSystem.Services
             var Order = mapper.Map<Order>(OrderDto);
             var result = await unit.OrderRepository.CalculateTotalCost(Order);
             result.OrderDate = DateTime.Now;
-            result.OrderStatus = OrderStatus.New;
+           // result.OrderStatus = OrderStatusEnum.New;
             if(result != null)
             {
                 await unit.OrderRepository.Add(result);
@@ -114,7 +114,7 @@ namespace ShippingSystem.Services
             return true;
         }
 
-        public async Task<IEnumerable<OrderDto>> FilterOrderByStatus(OrderStatus status)
+        public async Task<IEnumerable<OrderDto>> FilterOrderByStatus(OrderStatusEnum status)
         {
 
             var orders = await unit.OrderRepository.FilterByStatus(status);
@@ -128,7 +128,7 @@ namespace ShippingSystem.Services
                 return mapper.Map<IEnumerable<OrderDto>>(orders);
         }
 
-        public async Task<IEnumerable<OrderDto>> FilterOrderByStatusAndDate(OrderStatus status, DateTime startDate , DateTime endDate)
+        public async Task<IEnumerable<OrderDto>> FilterOrderByStatusAndDate(OrderStatusEnum status, DateTime startDate , DateTime endDate)
         {
 
             var orders = await unit.OrderRepository.FilterByStatusAndDate(status, startDate, endDate);
@@ -142,14 +142,27 @@ namespace ShippingSystem.Services
                 return mapper.Map<IEnumerable<OrderDto>>(orders);
         }
 
-         public async Task ChangeStatus(int orderId, OrderStatus status)
+         public async Task ChangeStatus(int orderId, OrderStatusEnum status)
          {
             var order = unit.OrderRepository.GetById(orderId).Result;
 
-            order.OrderStatus = status;
+            //order.OrderStatus = status;
 
             await unit.OrderRepository.Update(order);
             await unit.Save();
          }
+
+        public async Task<IEnumerable<OrderCountDto>> GetEmployeeCountOrders(string roleId)
+        {
+            var orders = await unit.OrderRepository.GetEmployeeCountOrders(roleId);
+            return orders;
+
+        }
+
+        public async Task<IEnumerable<OrderCountDto>> GetRepresentativeCountOrders(string roleId,string representativeId)
+        {
+            var orders = await unit.OrderRepository.GetRepresentativeCountOrders(roleId,representativeId);
+            return orders;
+        }
     }
 }

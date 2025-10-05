@@ -26,7 +26,9 @@ namespace ShippingSystem.DTOs.Order
 
         public string? Notes { get; set; }
 
-        public OrderStatus? OrderStatus { get; set; }
+        public int? StatusId { get; set; }
+
+        public string Description { get; set; }
 
         public OrderTypeEnum orderType { get; set; }
 

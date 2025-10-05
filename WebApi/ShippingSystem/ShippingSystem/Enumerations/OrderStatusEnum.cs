@@ -1,6 +1,6 @@
 ﻿namespace ShippingSystem.Enumerations
 {
-    public enum OrderStatus
+    public enum OrderStatusEnum
     {
         New,
 

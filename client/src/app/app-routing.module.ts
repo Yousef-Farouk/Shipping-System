@@ -16,7 +16,7 @@ const routes: Routes = [
 
   // { path: 'branch', loadChildren: () => import('./features/branch/branch.module').then(m => m.BranchModule) },
   // { path: 'represent', loadChildren: () => import('./features/representative/representative.module').then(m => m.RepresentativeModule)},
-  { path: 'order', loadChildren: () => import('./features/order/order.module').then(m => m.OrderModule)},
+  //{ path: 'order', loadChildren: () => import('./features/order/order.module').then(m => m.OrderModule)},
   // { path: 'mainscreen', loadChildren: () => import('./features/main screen/mainscreen.module').then(m=>m.mainscreenModule)},
   //{ path: '', redirectTo: '', pathMatch: 'full' },
   

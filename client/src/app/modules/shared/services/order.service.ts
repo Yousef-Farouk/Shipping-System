@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient,HttpParams } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
-import { ApiService } from '../../modules/shared/services/api.service';
-import { Order } from '../../modules/shared/Models/Order';
-import { OrderStatus } from '../../modules/shared/Models/Enums';
+import { environment } from '../../../../environments/environment';
+import { map, Observable, tap } from 'rxjs';
+import { ApiService } from './api.service';
+import { Order } from '../Models/Order';
+import { OrderStatus } from '../Models/Enums';
+import { OrderCountDto } from '../Models/OrderCountDto';
 
 
 @Injectable({
@@ -85,6 +86,24 @@ export class OrderService extends ApiService<Order> {
     params = params.append('status', status.toString());
 
     return this.http.put<any>(`${this.apiUrL}/ChangeStatus`, null,{ params });
+  }
+
+  getEmployeeOrderCount(roleId :string):Observable<OrderCountDto[]>{
+
+    let params = new HttpParams();
+    params = params.append('roleId', roleId);
+    return this.http.get<OrderCountDto[]>(`${this.apiUrL}/count/employee`,{params})
+  }
+
+
+  getRepresentativeOrderCount(roleId :string,representativeId : string):Observable<OrderCountDto[]>{
+
+    let params = new HttpParams();
+    params = params.append('roleId', roleId);
+    params = params.append('representativeId', representativeId);
+
+    return this.http.get<OrderCountDto[]>(`${this.apiUrL}/count/representative`,{params})
+    
   }
 
 

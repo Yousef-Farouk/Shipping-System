@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [RepresentativeMainScreenComponent,AllOrdersComponent],
+  declarations: [RepresentativeMainScreenComponent],
   imports: [
     CommonModule,
     RepresentativeUserRoutingModule,

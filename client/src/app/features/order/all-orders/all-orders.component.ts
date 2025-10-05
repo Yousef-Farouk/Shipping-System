@@ -1,8 +1,11 @@
-import { OrderService } from './../order.service';
+import { UserDetailsDTO } from './../../auth/interfaces/user-details-dto';
+import { OrderService } from '../../../modules/shared/services/order.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule ,FormBuilder,Validators} from '@angular/forms';
 import { OrderStatus } from '../../../modules/shared/Models/Enums';
 import { Order } from '../../../modules/shared/Models/Order';
+import { RepresentativeService } from '../../representative/representative.service';
+import { Representative } from '../../../modules/shared/Models/Representative';
 
 @Component({
   selector: 'app-all-orders',
@@ -12,12 +15,13 @@ import { Order } from '../../../modules/shared/Models/Order';
 export class AllOrdersComponent implements OnInit{
 
   orderStatus= OrderStatus 
-  orders : Order[] = [] 
-
+  orders : Order[] = [] ;
+  representativesList : Representative[] = []
   orderId : number = 0
   modalOpen : boolean = false
   editFlag: boolean = false
-
+  assignModal : boolean = false
+  statusModal :boolean = false
   statusForm!:FormGroup
 
   status : any 
@@ -25,7 +29,8 @@ export class AllOrdersComponent implements OnInit{
   
   constructor(
     private orderService:OrderService,
-    private formBuilder:FormBuilder
+    private formBuilder:FormBuilder,
+    private representativeService : RepresentativeService
   ) {
     // this.orderStatus = OrderStatus
     
@@ -68,14 +73,28 @@ export class AllOrdersComponent implements OnInit{
 
   openModal(id:number) {
     this.modalOpen = true;
+    this.statusModal= true ;
     this.orderId = id 
-    console.log(id)
     
+  }
+
+  openAssignModal(id:number){
+    this.modalOpen = true;
+    this.assignModal = true ;
+    this.orderId = id 
+    this.fillRepresentativeDropDown();
   }
 
   closeModal() {
     this.modalOpen = false;
     this.editFlag = false;
+    this.statusModal = false;
+  }
+
+  closeAssignModal() {
+    this.modalOpen = false;
+    this.editFlag = false;
+    this.assignModal = false;
   }
 
 
@@ -83,8 +102,6 @@ export class AllOrdersComponent implements OnInit{
     const target = event.target as HTMLSelectElement;
     const selectedValue = target.value;
     this.status = selectedValue
-    console.log(this.status)
-    console.log("change")
   }
 
   changeStatus(){
@@ -110,6 +127,18 @@ export class AllOrdersComponent implements OnInit{
         console.log(data)
       }
     })
+  }
+
+
+  fillRepresentativeDropDown()
+  {
+      this.representativeService.getRepresentatives().subscribe(
+        {
+            next:(res:Representative[])=>{
+              this.representativesList = res 
+            }
+        }
+      )
   }
 
 }

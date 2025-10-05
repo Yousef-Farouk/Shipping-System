@@ -31,6 +31,7 @@ namespace ShippingSystem.Services
         private UserManager<ApplicationUser> userManager;
         private readonly IUnitOfWork unitOfWork;
         private readonly ShippingContext context;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         public AccountControllerService(IMapper mapper, UserManager<ApplicationUser> userManager, IConfiguration configuration, IUnitOfWork unitOfWork,ShippingContext _context)
         {
@@ -45,6 +46,7 @@ namespace ShippingSystem.Services
         {
             var role = (await userManager.GetRolesAsync(applicationUser)).FirstOrDefault();
 
+            //var role =  context.Roles.FirstOrDefault(ur => ur. == applicationUser.Id).na;
             return role;
         }
         private async Task<string>  GenerateToken(ApplicationUser? applicationUser = null, ClaimsPrincipal? principal = null)
@@ -53,16 +55,28 @@ namespace ShippingSystem.Services
 
             IEnumerable<Claim> claims = new List<Claim>();
 
+            //var userRoles = context..FirstOrDefault(ur => ur. == applicationUser.Id)
+            var userRole = await context.UserRoles.Where(ur => ur.UserId == applicationUser.Id).Join(
+                               context.Roles,
+                               ur => ur.RoleId,
+                               r => r.Id,
+                               (ur, r) => new { r.Id, r.Name }
+                            ).FirstOrDefaultAsync();
+
+
+
             if (applicationUser != null)
             {
                 var groupPriveleges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByUserId(applicationUser.Id);
                 var groupPrivelegeDto = mapper.Map<List<GroupPrivilegeDTO?>>(groupPriveleges);
                 var privielegeString = JsonSerializer.Serialize(groupPrivelegeDto);
-
+                var roleName = 
                 claims = new List<Claim>
                 {
                     new Claim("userId", applicationUser.Id ?? ""),
                     new Claim("groupPrivelege",privielegeString),
+                    new Claim("roleId",userRole.Id),
+                    new Claim("roleName",userRole.Name),
                 };
 
             }
@@ -129,6 +143,7 @@ namespace ShippingSystem.Services
         {
             ApplicationUser? user = await userManager.FindByEmailAsync(loginDTO.Email);
 
+
             if (user is null)
             {
                 return new AuthResponseDTO
@@ -168,7 +183,7 @@ namespace ShippingSystem.Services
 
             await userManager.UpdateAsync(user);
 
-            string role = await GetUserRole(user);
+            //string role = await GetUserRole(user);
 
             return new AuthResponseDTO
             {
@@ -176,7 +191,7 @@ namespace ShippingSystem.Services
                 Token = token,
                 RefreshToken = refreshToken.Token,
                 Message = "Login successful",
-                Role = role
+               // Role = role
             };
         }
 

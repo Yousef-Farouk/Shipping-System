@@ -22,7 +22,6 @@ export class EmployeeGuard implements CanActivate {
       const role = this.authService.getRole()
       if (role == Roles.employee)
       {
-        console.log('employee login succeeded')
         return true;
       }
       this.router.navigate(['/auth/login']);

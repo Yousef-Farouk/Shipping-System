@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Representative } from '../../modules/shared/Models/Representative';
 @Injectable({
   providedIn: 'root',
 })
@@ -9,8 +10,8 @@ export class RepresentativeService {
 
   constructor(private http: HttpClient) {}
 
-  getRepresentatives(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiURL}`);
+  getRepresentatives(): Observable<Representative[]> {
+    return this.http.get<Representative[]>(`${this.apiURL}`);
   }
 
   registerRepresentative(representative: any): Observable<any> {

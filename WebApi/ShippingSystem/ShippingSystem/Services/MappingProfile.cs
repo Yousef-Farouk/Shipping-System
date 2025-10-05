@@ -146,12 +146,17 @@ namespace ShippingSystem.Services
                .ForMember(dest => dest.MerchantName, opt => opt.MapFrom(src => src.Merchant.FullName))
                .ForMember(dest => dest.GovernateName, opt => opt.MapFrom(src => src.Governate.Name))
                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
-              .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.OrderDate.Value.Date));
+              .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.OrderDate.Value.Date))
+              .ForMember(dest=>dest.StatusId,opt=>opt.MapFrom(src=>src.StatusId))
+              .ReverseMap();
 
 
-            CreateMap<OrderDto, Order>();
+            CreateMap<Order, OrderCountDto>()
+                .ReverseMap();
 
-            CreateMap<Order, OrderDto>().ReverseMap();
+            //CreateMap<OrderDto, Order>();
+
+            //CreateMap<Order, OrderDto>().ReverseMap();
 
             CreateMap<ProductOrderDto, ProductOrder>().ReverseMap();
 

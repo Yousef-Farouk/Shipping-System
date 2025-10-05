@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../modules/shared/services/auth.service';
+import { Roles } from '../modules/shared/Enums/rolesEnum';
 
 
 @Injectable({
@@ -15,13 +16,13 @@ export class MerchantGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      const role = localStorage.getItem('role')
-      if (role=='merchant')
-      {
-        console.log('merchant login succeeded')
-        return true;
-      }
-      this.router.navigate(['/auth/login']);
-      return false;
+       const role = this.authService.getRole()
+        if (role == Roles.merchant)
+            {
+              console.log('employee login succeeded')
+              return true;
+            }
+            this.router.navigate(['/auth/login']);
+        return false;    
   }
 }

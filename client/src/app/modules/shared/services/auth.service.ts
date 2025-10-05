@@ -23,7 +23,8 @@ import { RefreshToken } from '../Models/RefreshToken';
 })
 export class AuthService {
   private tokenKey = 'token';
-  private roleKey = 'role';
+  private roleIdKey = 'roleId';
+  private roleName = 'roleName';
   private privilegesKey = 'privileges';
   private userIdKey = 'userId';
   private refreshTokenKey = 'refreshToken'
@@ -84,13 +85,16 @@ export class AuthService {
   {
     const token :string = res.token
     const tokenData : any = jwtDecode(token)
-    const role = res.role ;
+    const roleId =tokenData['roleId'] ;
     const userId = tokenData['userId']
+    const roleName =tokenData['roleName'] ;
     const refreshToken = res.refreshToken 
     this.cookieService.set(this.tokenKey,token,undefined,undefined,undefined,true,'Strict')
-    this.cookieService.set(this.roleKey,role,undefined,undefined,undefined,true,'Strict')
+    this.cookieService.set(this.roleIdKey,roleId,undefined,undefined,undefined,true,'Strict')
     this.cookieService.set(this.userIdKey,userId,undefined,undefined,undefined,true,'Strict')
     this.cookieService.set(this.refreshTokenKey,refreshToken,undefined,undefined,undefined,true,'Strict')
+    this.cookieService.set(this.roleName,roleName,undefined,undefined,undefined,true,'Strict')
+
     this.router.navigate(['']);
     
     // if (role === Roles.employee ){
@@ -158,7 +162,15 @@ export class AuthService {
 
   getRole(): string  {
     //return localStorage.getItem(this.roleKey);
-    return this.cookieService.get('role')
+    return this.cookieService.get(this.roleName)
+  }
+
+  getRoleId():string{
+    return this.cookieService.get(this.roleIdKey)
+  }
+
+  getUserId():string{
+    return this.cookieService.get(this.userIdKey)
   }
 
   getPrivileges(): GroupPrivilegeDTO[] | null {

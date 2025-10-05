@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainScreenComponent } from './mainscreen/mainscreen.component';
 import { DashbaordComponent } from './dashbaord/dashbaord.component';
 import { MerchantGuard } from '../../guards/merchant.guard';
 import { RepresentativeGuard } from '../../guards/representative.guard';
@@ -16,7 +15,7 @@ const routes: Routes = [
     ]
     
   },
- 
+ //representative
 ];
 
 @NgModule({

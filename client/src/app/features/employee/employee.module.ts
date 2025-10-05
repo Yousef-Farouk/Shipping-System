@@ -11,10 +11,11 @@ import { BranchModule } from '../branch/branch.module';
 import { MatFormField, MatFormFieldControl, MatLabel } from "@angular/material/form-field";
 import { MatSelectTrigger, MatSelect } from "@angular/material/select";
 import { MatOptionModule, MatOption } from "@angular/material/core";
+import { EmployeeMainScreenComponent } from '../main screen/employee-mainscreen/employee-mainscreen.component';
 
 
 @NgModule({
-  declarations: [AddEmployeeComponent,EmployeeListComponent],
+  declarations: [AddEmployeeComponent,EmployeeListComponent,EmployeeMainScreenComponent],
   imports: [
     CommonModule,
     EmployeeRoutingModule,

@@ -7,6 +7,8 @@ namespace ShippingSystem.Models
     public class Roles : IdentityRole
     {
         public DateTime? DateAdded { get; set; } = DateTime.UtcNow;
+
+        public virtual IEnumerable<OrderStatusRoleDescriptions> OrderStatusRoleDescriptions { get; set; }
     }
 
 }

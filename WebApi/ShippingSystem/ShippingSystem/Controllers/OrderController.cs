@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using ShippingSystem.DTOs.Order;
 using ShippingSystem.Enumerations;
 using ShippingSystem.Services;
@@ -22,6 +23,21 @@ namespace ShippingSystem.Controllers
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders(int pageNumber = 1, int pageSize = 10)
         {
             var orders = await _orderService.GetOrdersAsync(pageNumber, pageSize);
+            return Ok(orders);
+        }
+
+
+        [HttpGet("count/employee")]
+        public async Task<ActionResult<IEnumerable<OrderCountDto>>> GetEmployeeCountOrders([FromQuery] string roleId)
+        {
+            var orders = await _orderService.GetEmployeeCountOrders(roleId);
+            return Ok(orders);
+        }
+
+        [HttpGet("count/representative")]
+        public async Task<ActionResult<IEnumerable<OrderCountDto>>> GetRepresentativeCountOrders([FromQuery] string roleId, [FromQuery]string representativeId)
+        {
+            var orders = await _orderService.GetRepresentativeCountOrders(roleId, representativeId);
             return Ok(orders);
         }
 
@@ -116,7 +132,7 @@ namespace ShippingSystem.Controllers
 
         // GET: api/Order/filterByStatus?status=Pending
         [HttpGet("filterByStatus")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> FilterOrderByStatus(OrderStatus status)
+        public async Task<ActionResult<IEnumerable<OrderDto>>> FilterOrderByStatus(OrderStatusEnum status)
         {
             var orders = await _orderService.FilterOrderByStatus(status);
             return Ok(orders);
@@ -124,14 +140,14 @@ namespace ShippingSystem.Controllers
 
         // GET: api/Order/filterByStatusAndDate?status=Pending&startDate=2022-01-01&endDate=2022-12-31
         [HttpGet("filterByStatusAndDate")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> FilterOrderByStatusAndDate(OrderStatus status, DateTime startDate, DateTime endDate)
+        public async Task<ActionResult<IEnumerable<OrderDto>>> FilterOrderByStatusAndDate(OrderStatusEnum status, DateTime startDate, DateTime endDate)
         {
             var orders = await _orderService.FilterOrderByStatusAndDate(status, startDate, endDate);
             return Ok(orders);
         }
 
         [HttpPut("ChangeStatus")]
-        public async Task<IActionResult> ChangeStatus([FromQuery]int orderId,[FromQuery]OrderStatus status)
+        public async Task<IActionResult> ChangeStatus([FromQuery]int orderId,[FromQuery]OrderStatusEnum status)
         {
             await _orderService.ChangeStatus(orderId,status);
             return Ok();

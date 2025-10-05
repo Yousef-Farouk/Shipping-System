@@ -1,7 +1,7 @@
 import { CityService } from '../../../modules/shared/services/city.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
-import { OrderService } from '../../order/order.service';
+import { OrderService } from '../../../modules/shared/services/order.service';
 import { ActivatedRoute, Router} from '@angular/router';
 import { NgModule } from '@angular/core';
 import { GovernateServiceService } from '../../../modules/shared/services/governate-service.service';
