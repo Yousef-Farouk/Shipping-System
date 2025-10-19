@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResetPasswordDTO } from '../interfaces/reset-password-dto';
+import { ResetPasswordDTO } from '../../../modules/shared/Models/reset-password-dto';
 import { AuthService } from '../../../modules/shared/services/auth.service';
 
 @Component({

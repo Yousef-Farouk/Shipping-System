@@ -8,13 +8,24 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from '../../interceptors/token.interceptor';
+import { AuthEffects } from './store/auth.effects';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { authReducer } from './store/auth.reducer';
 
 @NgModule({
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   declarations: [ LoginComponent, LogoutComponent, ForgetPasswordComponent, ResetPasswordComponent ],
-  imports: [ CommonModule, ReactiveFormsModule, FormsModule, AuthRoutingModule,  ],
+  imports: [ 
+             CommonModule, 
+             ReactiveFormsModule, 
+             FormsModule, 
+             AuthRoutingModule, 
+             EffectsModule.forFeature([AuthEffects]),
+             StoreModule.forFeature("Auth",authReducer)
+            ],
 })
 
 export class AuthModule { }

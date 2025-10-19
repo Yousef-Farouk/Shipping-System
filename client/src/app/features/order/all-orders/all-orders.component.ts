@@ -1,4 +1,4 @@
-import { UserDetailsDTO } from './../../auth/interfaces/user-details-dto';
+import { UserDetailsDTO } from '../../../modules/shared/Models/user-details-dto';
 import { OrderService } from '../../../modules/shared/services/order.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule ,FormBuilder,Validators} from '@angular/forms';

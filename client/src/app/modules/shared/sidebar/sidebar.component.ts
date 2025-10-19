@@ -4,6 +4,9 @@ import { map } from 'rxjs';
 import { Actions, PremissionMap, Roles } from '../Enums/rolesEnum';
 import { GroupPrivilegeDTO } from '../../../features/admin/interfaces/group-privilege-dto';
 import { PrivilegeService } from '../services/privilege.service';
+import {Store } from '@ngrx/store';
+import { Auth } from '../../../features/auth/store/auth.model';
+import { AuthActions } from '../../../features/auth/store/auth.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +21,9 @@ export class SidebarComponent implements OnInit {
   Roles = Roles
   Actions = Actions
   constructor(private authService: AuthService, 
-              private privilegeService: PrivilegeService)
+              private privilegeService: PrivilegeService,
+              private store : Store<Auth>
+            )
               {}
 
   ngOnInit(): void {
@@ -41,8 +46,8 @@ export class SidebarComponent implements OnInit {
   }
 
   logout() {
-
-    this.authService.logout();
+   // this.authService.logout();
+   this.store.dispatch(AuthActions.logout())
   }
 
   get premission ()

@@ -56,17 +56,18 @@ namespace ShippingSystem.Services
             IEnumerable<Claim> claims = new List<Claim>();
 
             //var userRoles = context..FirstOrDefault(ur => ur. == applicationUser.Id)
-            var userRole = await context.UserRoles.Where(ur => ur.UserId == applicationUser.Id).Join(
-                               context.Roles,
-                               ur => ur.RoleId,
-                               r => r.Id,
-                               (ur, r) => new { r.Id, r.Name }
-                            ).FirstOrDefaultAsync();
+         
 
 
 
             if (applicationUser != null)
             {
+                var userRole = await context.UserRoles.Where(ur => ur.UserId == applicationUser.Id).Join(
+                            context.Roles,
+                            ur => ur.RoleId,
+                            r => r.Id,
+                            (ur, r) => new { r.Id, r.Name }
+                         ).FirstOrDefaultAsync();
                 var groupPriveleges = await unitOfWork.GroupPrivilegeRepository.GetGroupPrivilegesByUserId(applicationUser.Id);
                 var groupPrivelegeDto = mapper.Map<List<GroupPrivilegeDTO?>>(groupPriveleges);
                 var privielegeString = JsonSerializer.Serialize(groupPrivelegeDto);
@@ -85,7 +86,7 @@ namespace ShippingSystem.Services
                 claims = principal.Claims;
             }
 
-            DateTime expiration =  DateTime.UtcNow.AddMinutes(1);
+            DateTime expiration = DateTime.UtcNow.AddMinutes(10);
 
             var key = Encoding.ASCII.GetBytes(configuration.GetSection("JwtSettings").GetSection("securityKey").Value!);
             var tokenDescriptor = new SecurityTokenDescriptor

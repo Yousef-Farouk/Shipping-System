@@ -9,11 +9,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { Actions, actionToPropertyMap, Roles } from '../Enums/rolesEnum';
 import { GroupPrivilegeDTO } from '../../../features/admin/interfaces/group-privilege-dto';
 import { environment } from '../../../../environments/environment';
-import { ResponseDTO } from '../../../features/auth/interfaces/response-dto';
-import { LoginDTO } from '../../../features/auth/interfaces/login-dto';
-import { ForgetPasswordDTO } from '../../../features/auth/interfaces/forget-password-dto';
-import { ResetPasswordDTO } from '../../../features/auth/interfaces/reset-password-dto';
-import { UserDetailsDTO } from '../../../features/auth/interfaces/user-details-dto';
+import { ResponseDTO } from '../Models/response-dto';
+import { LoginDTO } from '../Models/login-dto';
+import { ForgetPasswordDTO } from '../Models/forget-password-dto';
+import { ResetPasswordDTO } from '../Models/reset-password-dto';
+import { UserDetailsDTO } from '../Models/user-details-dto';
 import { PrivilegeDTO } from '../../../features/admin/interfaces/privilege-dto';
 import { RefreshToken } from '../Models/RefreshToken';
 
@@ -115,9 +115,6 @@ export class AuthService {
   }
 
   logout(): void {
-    // localStorage.removeItem(this.tokenKey);
-    // localStorage.removeItem(this.roleKey);
-    // localStorage.removeItem(this.privilegesKey);
     this.cookieService.deleteAll()
     this.router.navigate(['/auth/login']);
   }
@@ -227,4 +224,6 @@ export class AuthService {
     return !!groupPrivelege[actionName];
   
   }
+
+
 }

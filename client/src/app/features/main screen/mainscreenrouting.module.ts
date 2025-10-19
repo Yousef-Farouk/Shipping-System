@@ -12,8 +12,8 @@ const routes: Routes = [
       {path:'merchant',loadChildren:()=>import('../merchant/merchants.module').then(m=>m.MerchantsModule),canActivate:[MerchantGuard]},
       {path:'representative',loadChildren:()=>import('../representative/representative.module').then(m=>m.RepresentativeModule),canActivate:[RepresentativeGuard]},
       {path:'employee',loadChildren:()=>import('../employee/employee.module').then(m=>m.EmployeeModule),canActivate:[EmployeeGuard]},
-    ]
-    
+    ],
+
   },
  //representative
 ];
