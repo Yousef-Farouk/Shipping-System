@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using ShippingSystem.Models;
 using ShippingSystem.Repositories;
 using ShippingSystem.Services;
@@ -148,7 +152,6 @@ namespace ShippingSystem
                 });
             });
 
-            builder.Services.AddControllers();
 
             //> Add JWT Authentication
             #region jwt use default schema
@@ -180,6 +183,28 @@ namespace ShippingSystem
 
                 };
             });
+            #endregion
+
+
+            #region OpenTelemetry
+
+            var serviceName = "ShippingSystem";
+
+
+            builder.Services.AddOpenTelemetry().ConfigureResource(resource => resource.AddService(serviceName, "V1.0"))
+                            .WithTracing(tracing => tracing.AddAspNetCoreInstrumentation()
+                                                             //.AddEntityFrameworkCoreInstrumentation()
+                                                            .AddHttpClientInstrumentation()
+                                                            .AddSource("ShippingSystem")
+                                                           .AddOtlpExporter()
+                                         )
+                            .WithMetrics(metrics => metrics.AddAspNetCoreInstrumentation()
+                                                            .AddHttpClientInstrumentation()
+                                                            .AddOtlpExporter()
+                                        );
+
+            builder.Logging.AddOpenTelemetry(logging => 
+                                            logging.AddOtlpExporter());
             #endregion
 
 

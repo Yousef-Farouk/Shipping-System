@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ShippingSystem.Diagnostics;
 using ShippingSystem.DTOs;
 using ShippingSystem.Models;
 using ShippingSystem.Repositories;
@@ -22,7 +23,12 @@ public class EmployeeService
 
     public async Task<List<EmployeeDTO>> GetAllEmployees()
     {
+
+        using var activity = DiagnosticsConfig.Source.StartActivity("GetEmployees");
         var employees = await unit.EmployeeRepository.GetActiveEmployee();
+
+        activity?.SetTag("employees.count", employees.ToList().Count);
+
         return mapper.Map<List<EmployeeDTO>>(employees);
     }
 
