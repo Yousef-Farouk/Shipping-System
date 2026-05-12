@@ -90,18 +90,6 @@ namespace ShippingSystem.Controllers
                 return BadRequest(new {errors =  result.Errors });
             }
             return Ok(new { message = "employee added successfully" });
-
-
-            //try
-            //{
-            //    await employeeService.AddEmployee(employeeDto);
-
-            //    return Ok(new { message = "employee added successfully" });
-            //}
-            //catch(Exception ex) 
-            //{
-            //    return BadRequest(new {message = "cant add this employee"})
-            //}
                         
         }
 

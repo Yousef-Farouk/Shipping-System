@@ -1,0 +1,22 @@
+# first stage of building docker image 
+From node:lts-alpine3.23 as build 
+
+# -p for if the folder exist it will not create 
+RUN mkdir -p /app       
+
+WORKDIR /app 
+
+COPY package.json package-lock.json /app/
+RUN npm install
+
+COPY . /app/
+RUN npm run build -- --configuration=production
+
+# final stage 
+FROM nginx:alpine
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY --from=build /app/dist/client/browser /usr/share/nginx/html
+
+
+CMD ["nginx", "-g", "daemon off;"]

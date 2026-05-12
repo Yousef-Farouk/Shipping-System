@@ -191,20 +191,20 @@ namespace ShippingSystem
             var serviceName = "ShippingSystem";
 
 
-            builder.Services.AddOpenTelemetry().ConfigureResource(resource => resource.AddService(serviceName, "V1.0"))
-                            .WithTracing(tracing => tracing.AddAspNetCoreInstrumentation()
-                                                             //.AddEntityFrameworkCoreInstrumentation()
-                                                            .AddHttpClientInstrumentation()
-                                                            .AddSource("ShippingSystem")
-                                                           .AddOtlpExporter()
-                                         )
-                            .WithMetrics(metrics => metrics.AddAspNetCoreInstrumentation()
-                                                            .AddHttpClientInstrumentation()
-                                                            .AddOtlpExporter()
-                                        );
+            //builder.Services.AddOpenTelemetry().ConfigureResource(resource => resource.AddService(serviceName, "V1.0"))
+            //                .WithTracing(tracing => tracing.AddAspNetCoreInstrumentation()
+            //                                                 //.AddEntityFrameworkCoreInstrumentation()
+            //                                                .AddHttpClientInstrumentation()
+            //                                                .AddSource("ShippingSystem")
+            //                                               .AddOtlpExporter()
+            //                             )
+            //                .WithMetrics(metrics => metrics.AddAspNetCoreInstrumentation()
+            //                                                .AddHttpClientInstrumentation()
+            //                                                .AddOtlpExporter()
+            //                            );
 
-            builder.Logging.AddOpenTelemetry(logging => 
-                                            logging.AddOtlpExporter());
+            //builder.Logging.AddOpenTelemetry(logging => 
+            //                                logging.AddOtlpExporter());
             #endregion
 
 
@@ -214,11 +214,13 @@ namespace ShippingSystem
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            //if (app.Environment.IsDevelopment())
+            //{
+                
+            //}
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 

@@ -1,0 +1,40 @@
+﻿#containers
+services:
+  sqlServer:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    networks: 
+      - net1
+    hostname: sqlserver
+    volumes:
+      - sqldata:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=1472583Power4u
+  
+  shipping-back:
+    build: ./WebApi/ShippingSystem/ShippingSystem
+    ports: 
+      - 5000:8080
+    networks: 
+      - net1
+    depends_on:
+      - sqlServer
+    environment:
+      - ConnectionStrings:con=Server=sqlserver;Database=ShippingSystem;User Id=sa;Password=1472583Power4u;TrustServerCertificate=True;
+    container_name: shipping-back-compose
+
+  shipping-front-compose:
+    build: ./client
+    ports:
+      - 4200:80
+    depends_on: 
+      - shipping-back
+    container_name: shipping-front-compose
+    networks: 
+      - net1
+
+networks:
+  net1:
+  
+volumes:
+  sqldata:

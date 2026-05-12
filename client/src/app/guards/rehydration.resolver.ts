@@ -13,7 +13,7 @@ export class RehydrationResolver implements Resolve<boolean> {
 
   resolve(): Observable<boolean> {
     return this.store.select(selectToken).pipe(
-      first(),
+      take(1),
       switchMap(token => {
         if (token) {
           // If a token already exists, rehydration has already happened or is not needed.

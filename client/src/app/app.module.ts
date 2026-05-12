@@ -16,15 +16,15 @@ import { AuthEffects } from './features/auth/store/auth.effects';
 import { authReducer } from './features/auth/store/auth.reducer';
 
 
-export function intializePremissionFactory(privilegeService :PrivilegeService){
+// export function intializePremissionFactory(privilegeService :PrivilegeService){
 
-  return ()=>{
-    // console.log("appintializer")
-    // return privilegeService.loadPrivilege();
+//   return ()=>{
+//     // console.log("appintializer")
+ //   return privilegeService.loadPrivilege();
 
-  }
+//   }
     
-}
+// }
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -43,12 +43,12 @@ export function intializePremissionFactory(privilegeService :PrivilegeService){
   ],
   providers: [
   
-   {
-      provide: APP_INITIALIZER,
-      useFactory: intializePremissionFactory,
-      deps: [PrivilegeService],
-      multi: true
-    },
+  //  {
+  //     provide: APP_INITIALIZER,
+  //     useFactory: intializePremissionFactory,
+  //     deps: [PrivilegeService],
+  //     multi: true
+  //   },
     { 
       provide: 'apiUrl', 
       useValue: environment.apiUrl 
